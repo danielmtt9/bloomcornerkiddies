@@ -1,14 +1,17 @@
 # Deployment Guide — Bloom Corner Kiddies
 
-**Stack:** PHP + MariaDB + Alpine.js | **Host:** Hostinger Shared Hosting
+**Stack:** PHP + MariaDB + Alpine.js
+**Host:** Hostinger Shared — bloomcornerkiddies.com
+**Account:** u746391188
 **CI/CD:** GitHub Actions (rsync over SSH on push to `main`)
+**Repo:** https://github.com/danielmtt9/bloomcornerkiddies.git
 
 ---
 
 ## Server Layout (Hostinger)
 
 ```
-/home/u[account]/              ← SSH home directory
+/home/u746391188/              ← SSH home directory (your account)
 ├── .env                       ← ⛔ NOT in git — manually created
 ├── config.php                 ← ⛔ NOT in git — manually created
 └── public_html/               ← ✅ Deployed by GitHub Actions
@@ -28,9 +31,11 @@
 
 1. Log in to [hPanel](https://hpanel.hostinger.com)
 2. Go to **Hosting → Manage → SSH Access**
-3. Enable SSH → set a password
-4. Note your SSH host (e.g. `srv123.hstgr.io`) and username (e.g. `u123456789`)
-5. Default Hostinger SSH port: **65002** (not 22!)
+3. Enable SSH access if not already enabled
+4. SSH details:
+   - **Host:** *(check hPanel → SSH Access for your server hostname)*
+   - **Username:** `u746391188`
+   - **Port:** `65002`
 
 ---
 
@@ -56,10 +61,10 @@ Go to your GitHub repo → **Settings → Secrets and variables → Actions → 
 
 | Secret Name | Value |
 |-------------|-------|
-| `HOSTINGER_HOST` | Your server hostname (e.g. `srv123.hstgr.io`) |
-| `HOSTINGER_USER` | Your Hostinger SSH username (e.g. `u123456789`) |
-| `HOSTINGER_SSH_PRIVATE_KEY` | Contents of `~/.ssh/bloomrocxx_deploy` (private key) |
-| `HOSTINGER_SSH_PORT` | `65002` (Hostinger default SSH port) |
+| `HOSTINGER_HOST` | SSH hostname from hPanel → SSH Access (e.g. `srv123.hstgr.io`) |
+| `HOSTINGER_USER` | `u746391188` |
+| `HOSTINGER_SSH_PRIVATE_KEY` | Contents of `keys/hostinger_deploy` (private key) |
+| `HOSTINGER_SSH_PORT` | `65002` |
 
 ---
 
@@ -70,26 +75,30 @@ SSH into your server:
 ssh -p 65002 u[account]@your-server.hstgr.io
 ```
 
+SSH into your server:
+```bash
+ssh -p 65002 u746391188@YOUR_SERVER_HOST
+```
+
 Create the `.env` file:
 ```bash
-nano ~/.env
-```
-Paste the contents from `.env.example` and fill in all values:
-```env
+cat > ~/.env << 'EOF'
 DB_HOST=localhost
-DB_NAME=u123456789_bloomcorner
-DB_USER=u123456789_admin
-DB_PASS=your_strong_password
+DB_NAME=u746391188_bloomcorner
+DB_USER=u746391188_bloomcorner
+DB_PASS=YOUR_DB_PASSWORD_FROM_HPANEL
+DB_PORT=3306
 
-ADMIN_PASSWORD_HASH=  # see Step 5 below
+ADMIN_PASSWORD_HASH=PASTE_OUTPUT_OF_npm_run_hash
 
-TELEGRAM_BOT_TOKEN=your_bot_token_from_botfather
-TELEGRAM_SELLER_CHAT_ID=your_chat_id_from_userinfobot
+TELEGRAM_BOT_TOKEN=YOUR_BOT_TOKEN
+TELEGRAM_SELLER_CHAT_ID=YOUR_CHAT_ID
 
 WA_NUMBER=2349049308656
 TELEGRAM_LINK=https://t.me/+2349049308656
 
 APP_ENV=production
+EOF
 ```
 
 Copy `config.php.example` to the server and rename it:
@@ -112,13 +121,24 @@ Copy the output (starts with `$2y$`) and paste it as `ADMIN_PASSWORD_HASH` in yo
 
 ### Step 6 — Set Up MariaDB Database
 
-In hPanel → **Databases → MySQL Databases**:
-1. Create database: `u[account]_bloomcorner`
-2. Create user: `u[account]_admin` with a strong password
-3. Assign user to database with ALL PRIVILEGES
-4. Note `DB_HOST` from hPanel (usually `localhost`)
+**1. MySQL Database:**
+- **Database:** `u746391188_bloomcorner` ✅ (already created)
+- **User:** `u746391188_bloomcorner` ✅ (already created)
+- **Password:** *(set when you created in hPanel — find it in hPanel → Databases)*
+- **Host:** `localhost` (when connecting from the server itself)
 
-Then import the SQL schema from Epic 1 (to be created in development sprint).
+**2. For remote migrations (running from your laptop):**
+```
+hPanel → MySQL Databases → Remote MySQL → Add your IP address
+DB_HOST = your server's IP or hostname
+```
+
+**3. Run migrations:**
+```bash
+# Update .env locally with DB_HOST=server_IP and DB_PASS=real_password
+npm run test-db    # verify connection
+npm run migrate    # create all 8 tables + seed data
+```
 
 ---
 
@@ -126,7 +146,7 @@ Then import the SQL schema from Epic 1 (to be created in development sprint).
 
 After deploying the site, register the bot webhook:
 ```bash
-curl "https://api.telegram.org/bot{YOUR_TOKEN}/setWebhook?url=https://your-domain.com/telegram-webhook.php"
+curl "https://api.telegram.org/bot{YOUR_TOKEN}/setWebhook?url=https://bloomcornerkiddies.com/telegram-webhook.php"
 ```
 Expected response: `{"ok":true,...}`
 
