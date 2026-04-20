@@ -18,6 +18,13 @@ Thumbs.db
 .vscode/
 *.log
 
+# ----- Node.js (dev scripts only) --------------------------
+node_modules/
+package-lock.json
+
+# ----- Generated SSH keys (NEVER commit) --------------------
+keys/
+
 # ----- PHP temp files ----------------------------------------
 *.cache
 
