@@ -1,6 +1,6 @@
 # Story 2.1: Admin Login
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -18,15 +18,15 @@ so that only I can enter the admin area.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 — Implement the login page and POST flow (AC: 1, 2, 3, 4)
-  - [ ] Render a password-only form.
-  - [ ] Verify against the configured password hash.
-- [ ] Task 2 — Establish secure session behavior (AC: 3, 5)
-  - [ ] Set authenticated session state correctly.
-  - [ ] Respect HTTPS production expectations.
-- [ ] Task 3 — Add verification coverage (AC: 1, 2, 3, 4, 5)
-  - [ ] Add PHP-level tests or smoke coverage for login success/failure.
-  - [ ] Record results in this story.
+- [x] Task 1 — Implement the login page and POST flow (AC: 1, 2, 3, 4)
+  - [x] Render a password-only form.
+  - [x] Verify against the configured password hash.
+- [x] Task 2 — Establish secure session behavior (AC: 3, 5)
+  - [x] Set authenticated session state correctly.
+  - [x] Respect HTTPS production expectations.
+- [x] Task 3 — Add verification coverage (AC: 1, 2, 3, 4, 5)
+  - [x] Add PHP-level tests or smoke coverage for login success/failure.
+  - [x] Record results in this story.
 
 ## Dev Notes
 
@@ -41,10 +41,27 @@ gpt-5
 
 ### Debug Log References
 
+- `php -l public_html/includes/admin.php`
+- `php -l public_html/admin/login.php`
+- `php -l scripts/test-admin-auth.php`
+- `npm run test-admin-auth`
+
 ### Completion Notes List
 
+- Added `/admin/login.php` as a password-only login form backed by `ADMIN_PASSWORD_HASH`.
+- Added shared admin auth helpers for password verification, session renewal, timeout handling, and HTTPS redirect calculation.
+- Successful login now creates an authenticated PHP session and redirects to `/admin/index.php`; failed login renders an inline error without creating session state.
+- Production HTTP login requests now calculate an HTTPS redirect target to keep the login route HTTPS-only.
+
 ### File List
+
+- public_html/includes/admin.php
+- public_html/admin/login.php
+- scripts/test-admin-auth.php
+- package.json
+- _bmad-output/implementation-artifacts/2-1-admin-login.md
 
 ### Change Log
 
 - Story created from Lane A sprint plan.
+- Implemented admin login flow and auth smoke coverage.

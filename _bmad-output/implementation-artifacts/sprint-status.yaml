@@ -51,10 +51,10 @@ development_status:
   1-3-migration-seed-execution-path: done
   epic-1-retrospective: optional
 
-  epic-2: backlog
-  2-1-admin-login: ready-for-dev
-  2-2-session-guard-logout: ready-for-dev
-  2-3-admin-layout-dashboard: ready-for-dev
+  epic-2: done
+  2-1-admin-login: done
+  2-2-session-guard-logout: done
+  2-3-admin-layout-dashboard: done
   epic-2-retrospective: optional
 
   epic-3: backlog
