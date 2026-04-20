@@ -40,12 +40,19 @@ function loadEnv(filePath) {
   return env;
 }
 
-// ----- Split SQL into individual statements ---------------------
-function parseSqlStatements(sql) {
-  return sql
-    .split(';')
-    .map(s => s.trim())
-    .filter(s => s.length > 0 && !s.startsWith('--') && !s.startsWith('/*'));
+function splitSchemaAndSeed(sql) {
+  const marker = '-- ==============================================================';
+  const seedMarker = `${marker}\n-- SEED DATA\n${marker}`;
+  const index = sql.indexOf(seedMarker);
+
+  if (index === -1) {
+    return { schemaSql: sql, seedSql: '' };
+  }
+
+  return {
+    schemaSql: sql.slice(0, index).trim(),
+    seedSql: sql.slice(index + seedMarker.length).trim(),
+  };
 }
 
 async function main() {
@@ -83,12 +90,13 @@ async function main() {
     console.log(`✅ Connected to ${config.database}@${config.host}\n`);
 
     const rawSql = readFileSync(sqlPath, 'utf8');
+    const { schemaSql, seedSql } = splitSchemaAndSeed(rawSql);
 
     if (FRESH) {
       // Drop tables in reverse FK order
       const drops = [
         'referral_uses', 'referral_codes',
-        'bot_sessions',
+        'product_categories',
         'product_sizes', 'product_images',
         'products',
         'categories',
@@ -102,40 +110,22 @@ async function main() {
       console.log('');
     }
 
-    // Split schema into individual statements
-    const statements = parseSqlStatements(
-      SEED_ONLY
-        ? rawSql.split('-- SEED DATA')[1] || ''
-        : rawSql
-    );
+    const runSchema = !SEED_ONLY;
+    const runSeed = true;
 
-    console.log(`📋 Running ${statements.length} SQL statements...\n`);
+    if (runSchema) {
+      console.log('📋 Applying schema...\n');
+      await connection.query(schemaSql);
+    }
 
-    let success = 0;
-    let skipped = 0;
-
-    for (const stmt of statements) {
-      try {
-        await connection.execute(stmt);
-        success++;
-        // Show table creations
-        if (stmt.toUpperCase().startsWith('CREATE TABLE')) {
-          const match = stmt.match(/CREATE TABLE.*?`?(\w+)`?/i);
-          if (match) console.log(`   ✓ Created table: ${match[1]}`);
-        }
-      } catch (err) {
-        if (err.code === 'ER_TABLE_EXISTS_ERROR') {
-          skipped++;
-        } else {
-          console.warn(`   ⚠️  Statement skipped: ${err.message}`);
-          console.warn(`      SQL: ${stmt.substring(0, 80)}...`);
-        }
-      }
+    if (runSeed && seedSql) {
+      console.log('🌱 Applying baseline seeds...\n');
+      await connection.query(seedSql);
     }
 
     console.log(`\n✅ Migration complete!`);
-    console.log(`   Statements run:    ${success}`);
-    console.log(`   Already existed:   ${skipped}`);
+    console.log(`   Schema applied:    ${runSchema ? 'yes' : 'no (seed-only)'}`);
+    console.log(`   Seeds applied:     ${seedSql ? 'yes' : 'no'}`);
 
     // Verify tables
     const [tables] = await connection.execute(

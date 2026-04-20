@@ -1,6 +1,6 @@
 # Story 1.3: Migration & Seed Execution Path
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -16,15 +16,15 @@ so that schema setup is deterministic and verifiable.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 — Align migration tooling with the updated schema (AC: 1, 2)
-  - [ ] Update scripts and SQL references to current Lane A schema.
-  - [ ] Ensure dependency order is correct.
-- [ ] Task 2 — Ensure seed execution is safe and repeatable (AC: 2)
-  - [ ] Prevent broken partial seed assumptions.
-  - [ ] Keep seeds compatible with fresh and non-fresh flows where intended.
-- [ ] Task 3 — Verify execution path locally (AC: 1, 2, 3)
-  - [ ] Run the DB test and migration path against the configured DB where safe.
-  - [ ] Record the exact commands and results in this story.
+- [x] Task 1 — Align migration tooling with the updated schema (AC: 1, 2)
+  - [x] Update scripts and SQL references to current Lane A schema.
+  - [x] Ensure dependency order is correct.
+- [x] Task 2 — Ensure seed execution is safe and repeatable (AC: 2)
+  - [x] Prevent broken partial seed assumptions.
+  - [x] Keep seeds compatible with fresh and non-fresh flows where intended.
+- [x] Task 3 — Verify execution path locally (AC: 1, 2, 3)
+  - [x] Run the DB test and migration path against the configured DB where safe.
+  - [x] Record the exact commands and results in this story.
 
 ## Dev Notes
 
@@ -39,10 +39,29 @@ gpt-5
 
 ### Debug Log References
 
+- `npm run test-db`
+- `npm run migrate -- --fresh`
+- `npm run test-schema`
+- `npm run migrate -- --seed-only`
+- `npm run test-schema`
+
 ### Completion Notes List
 
+- Reworked the migration runner to split schema and seed sections deterministically instead of relying on fragile statement splitting.
+- Updated the drop order for `--fresh` to respect the MVP foreign key dependency graph.
+- Added `scripts/verify-schema.mjs` plus `npm run test-schema` so the execution path validates tables, category seeds, seller config seeds, and multi-category constraints directly against MariaDB.
+- Verified the configured Hostinger DB connection, a full fresh migration, and a repeat seed-only run all pass cleanly.
+
 ### File List
+
+- scripts/migrate.mjs
+- scripts/test-connection.mjs
+- scripts/verify-schema.mjs
+- package.json
+- database/schema.sql
+- _bmad-output/implementation-artifacts/1-3-migration-seed-execution-path.md
 
 ### Change Log
 
 - Story created from Lane A sprint plan.
+- Implemented and verified the repeatable Lane A migration and seed execution path.

@@ -85,6 +85,25 @@ async function main() {
     } else {
       console.log(`\n📋 Tables found (${tables.length}):`);
       tables.forEach(t => console.log(`   ✓ ${t.TABLE_NAME}`));
+
+      const requiredTables = [
+        'categories',
+        'product_categories',
+        'product_images',
+        'product_sizes',
+        'products',
+        'referral_codes',
+        'referral_uses',
+        'seller_config',
+      ];
+      const present = new Set(tables.map(t => t.TABLE_NAME));
+      const missing = requiredTables.filter(table => !present.has(table));
+
+      if (missing.length === 0) {
+        console.log('\n📦 MVP schema tables are all present.');
+      } else {
+        console.log(`\n⚠️  Missing MVP tables: ${missing.join(', ')}`);
+      }
     }
 
     console.log('\n✅ All good! Database is reachable.\n');

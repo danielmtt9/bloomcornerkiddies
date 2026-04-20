@@ -1,6 +1,6 @@
 # Story 1.2: Store Settings & Referral Tables
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -19,15 +19,15 @@ so that admin settings and referral history can be persisted without hardcoded v
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 — Define seller config and referral schema (AC: 1, 4, 5)
-  - [ ] Model `seller_config`, `referral_codes`, and `referral_uses`.
-  - [ ] Enforce uniqueness and snapshot behavior.
-- [ ] Task 2 — Add seeds and defaults (AC: 2, 3)
-  - [ ] Seed the full key set with placeholder-safe values where needed.
-  - [ ] Keep open business copy configurable rather than hardcoded.
-- [ ] Task 3 — Verify table and seed behavior (AC: 1, 2, 3, 4, 5)
-  - [ ] Test/verify uniqueness and baseline rows.
-  - [ ] Record evidence in this story.
+- [x] Task 1 — Define seller config and referral schema (AC: 1, 4, 5)
+  - [x] Model `seller_config`, `referral_codes`, and `referral_uses`.
+  - [x] Enforce uniqueness and snapshot behavior.
+- [x] Task 2 — Add seeds and defaults (AC: 2, 3)
+  - [x] Seed the full key set with placeholder-safe values where needed.
+  - [x] Keep open business copy configurable rather than hardcoded.
+- [x] Task 3 — Verify table and seed behavior (AC: 1, 2, 3, 4, 5)
+  - [x] Test/verify uniqueness and baseline rows.
+  - [x] Record evidence in this story.
 
 ## Dev Notes
 
@@ -42,10 +42,26 @@ gpt-5
 
 ### Debug Log References
 
+- `npm run migrate -- --fresh`
+- `npm run migrate -- --seed-only`
+- `npm run test-schema`
+
 ### Completion Notes List
 
+- Added `seller_config`, `referral_codes`, and `referral_uses` to the MVP schema with uniqueness on `seller_config.key` and `referral_codes.code`.
+- Seeded the full required `seller_config` key set with placeholder-safe defaults, including a placeholder `telegram_link` per the locked MVP decision.
+- Preserved referral redemption snapshot behavior by storing `discount_percent` on `referral_uses` at insert time instead of deriving it later.
+- Verified the seeded rows remain stable across repeat seed runs.
+
 ### File List
+
+- database/schema.sql
+- scripts/migrate.mjs
+- scripts/verify-schema.mjs
+- package.json
+- _bmad-output/implementation-artifacts/1-2-store-settings-referral-tables.md
 
 ### Change Log
 
 - Story created from Lane A sprint plan.
+- Implemented store settings and referral persistence with repeatable baseline seeds.

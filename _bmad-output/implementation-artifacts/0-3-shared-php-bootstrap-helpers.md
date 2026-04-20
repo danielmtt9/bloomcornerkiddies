@@ -1,6 +1,6 @@
 # Story 0.3: Shared PHP Bootstrap Helpers
 
-Status: review
+Status: done
 
 ## Story
 
@@ -50,6 +50,7 @@ gpt-5
 - Added a shared include surface at `public_html/includes/bootstrap.php` that reuses the root `config.php` contract and exposes session start, admin guard, JSON response, and flash helpers.
 - Kept DB access and seller config access centralized through the existing `get_db()` and `get_config()` functions from the root config contract.
 - Added `scripts/test-php-bootstrap.php` and `npm run test-php-bootstrap` to prove the helper surface works in isolation from a temp bootstrap fixture.
+- Re-ran helper validation during Sprint 1 closeout to confirm the shared include layer still works against the finalized config contract.
 
 ### File List
 
@@ -62,3 +63,4 @@ gpt-5
 
 - Story created from Lane A sprint plan.
 - Implemented shared PHP bootstrap helpers and executable smoke-test coverage.
+- Story revalidated and closed during Sprint 1 completion.

@@ -10,6 +10,7 @@
     "test-deploy":"bash scripts/test-deploy-workflow.sh",
     "test-php-bootstrap":"php scripts/test-php-bootstrap.php",
     "test-db":    "node scripts/test-connection.mjs",
+    "test-schema":"node scripts/verify-schema.mjs",
     "deploy-key": "node scripts/generate-deploy-key.mjs",
     "setup":      "node scripts/setup.mjs"
   },

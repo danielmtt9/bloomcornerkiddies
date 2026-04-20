@@ -1,6 +1,6 @@
 # Story 0.2: Repository Safety & Deployment Pipeline
 
-Status: review
+Status: done
 
 ## Story
 
@@ -51,6 +51,7 @@ gpt-5
 - Existing `.gitignore` already satisfied the required secret and uploads ignore contract; no ignore-file change was needed.
 - Hardened `.github/workflows/deploy.yml` by normalizing SSH port handling through job env and keeping deploy scope anchored to `./public_html/`.
 - Added `scripts/test-deploy-workflow.sh` plus `npm run test-deploy` to validate deploy triggers, concurrency, rsync exclusions, and ignore coverage.
+- Re-ran deploy workflow validation as part of Sprint 1 closeout and confirmed the deploy contract still passes after the DB tooling changes.
 
 ### File List
 
@@ -63,3 +64,4 @@ gpt-5
 
 - Story created from Lane A sprint plan.
 - Implemented deployment workflow hardening and executable deploy validation coverage.
+- Story revalidated and closed during Sprint 1 completion.
