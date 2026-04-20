@@ -1,0 +1,110 @@
+<?php
+// ==============================================================
+// config.php — Bloom Corner Kiddies
+// ==============================================================
+// LOCATION: One level ABOVE public_html/ on the server
+//   e.g. /home/u[account]/config.php
+//   NOT inside public_html/ — never web-accessible
+//
+// USAGE in PHP files:
+//   require_once __DIR__ . '/../config.php';   // from public_html/any.php
+//   require_once __DIR__ . '/../../config.php'; // from public_html/admin/any.php
+//
+// SETUP:
+//   1. Copy .env.example to .env (same directory as this file)
+//   2. Fill in all values in .env
+//   3. Generate ADMIN_PASSWORD_HASH:
+//      php -r "echo password_hash('your_password', PASSWORD_BCRYPT);"
+// ==============================================================
+
+// --- Load .env file -------------------------------------------
+$env_file = __DIR__ . '/.env';
+
+if (!file_exists($env_file)) {
+    die('FATAL: .env file not found. Please create it from .env.example');
+}
+
+$lines = file($env_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+foreach ($lines as $line) {
+    $line = trim($line);
+    // Skip comments and empty lines
+    if ($line === '' || $line[0] === '#') continue;
+    if (!str_contains($line, '=')) continue;
+
+    [$key, $value] = explode('=', $line, 2);
+    $key   = trim($key);
+    $value = trim($value, " \t\n\r\0\x0B\"'");
+
+    if (!array_key_exists($key, $_SERVER) && !array_key_exists($key, $_ENV)) {
+        putenv("$key=$value");
+        $_ENV[$key]    = $value;
+        $_SERVER[$key] = $value;
+    }
+}
+
+// --- Database Configuration -----------------------------------
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_NAME', getenv('DB_NAME') ?: '');
+define('DB_USER', getenv('DB_USER') ?: '');
+define('DB_PASS', getenv('DB_PASS') ?: '');
+
+// --- Admin Panel ----------------------------------------------
+define('ADMIN_PASSWORD_HASH', getenv('ADMIN_PASSWORD_HASH') ?: '');
+
+// --- Telegram -------------------------------------------------
+define('TELEGRAM_BOT_TOKEN', getenv('TELEGRAM_BOT_TOKEN') ?: '');
+define('TELEGRAM_SELLER_CHAT_ID', getenv('TELEGRAM_SELLER_CHAT_ID') ?: '');
+
+// --- Store Contact -------------------------------------------
+define('WA_NUMBER',      getenv('WA_NUMBER')      ?: '2349049308656');
+define('TELEGRAM_LINK',  getenv('TELEGRAM_LINK')  ?: 'https://t.me/+2349049308656');
+
+// --- App Environment ------------------------------------------
+define('APP_ENV', getenv('APP_ENV') ?: 'production');
+
+if (APP_ENV === 'development') {
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
+} else {
+    ini_set('display_errors', '0');
+    error_reporting(0);
+}
+
+// --- Database Connection Helper -------------------------------
+function get_db(): PDO {
+    static $pdo = null;
+    if ($pdo === null) {
+        try {
+            $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4';
+            $pdo = new PDO($dsn, DB_USER, DB_PASS, [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES   => false,
+            ]);
+        } catch (PDOException $e) {
+            if (APP_ENV === 'development') {
+                die('DB connection failed: ' . $e->getMessage());
+            }
+            http_response_code(500);
+            die(json_encode(['error' => 'Service unavailable']));
+        }
+    }
+    return $pdo;
+}
+
+// --- seller_config Helper -------------------------------------
+function get_config(string $key, string $default = ''): string {
+    static $cache = [];
+    if (isset($cache[$key])) return $cache[$key];
+    try {
+        $pdo  = get_db();
+        $stmt = $pdo->prepare('SELECT value FROM seller_config WHERE `key` = ? LIMIT 1');
+        $stmt->execute([$key]);
+        $row  = $stmt->fetch();
+        $cache[$key] = $row ? $row['value'] : $default;
+    } catch (Exception $e) {
+        $cache[$key] = $default;
+    }
+    return $cache[$key];
+}

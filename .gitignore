@@ -1,0 +1,26 @@
+# ==============================================================
+# Bloom Corner Kiddies — .gitignore
+# ==============================================================
+
+# ----- Secrets (NEVER commit these) --------------------------
+.env
+config.php
+
+# ----- Uploaded product images (large, server-only) ----------
+public_html/uploads/
+
+# ----- OS & Editor junk --------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+*.log
+
+# ----- PHP temp files ----------------------------------------
+*.cache
+
+# ----- Composer (not used but just in case) ------------------
+vendor/
+composer.lock

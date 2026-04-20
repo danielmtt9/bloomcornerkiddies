@@ -1,0 +1,268 @@
+@startmindmap
+
+<style>
+mindmapDiagram {
+  node {
+    BackgroundColor #FFF8F0
+    BorderColor #C8A882
+    FontName Arial
+    FontSize 11
+  }
+  rootNode {
+    BackgroundColor #7A4419
+    FontColor #FFFFFF
+    BorderColor #4A2000
+    FontSize 15
+    FontStyle bold
+  }
+  :depth(1) {
+    FontStyle bold
+    FontSize 12
+  }
+}
+</style>
+
+* Kids Clothes\nStorefront 🇳🇬\n(Naira / Nigeria)
+
+** 🏪 STOREFRONT UX
+*** Product Card (List View)
+**** Primary photo (full width)
+**** SALE badge (if discounted)
+**** SOLD OUT badge (if all sizes = 0)
+**** Product name
+**** ~~₦Original~~ ₦Sale Price
+**** Gender + Category tags
+**** Brand name (if provided)
+**** "View Details" button
+*** Product Detail Page
+**** Swipeable photo gallery
+**** "Watch on TikTok" button (optional)
+**** Name · Brand · Gender
+**** Price with strikethrough (if sale)
+**** Material (if provided)
+**** Season/Occasion tag (if set)
+**** Short paragraph description
+**** Size selector
+***** Available sizes clickable
+***** Sold-out sizes greyed out
+**** Delivery info section
+**** WhatsApp + Telegram buttons
+**** "Save for Later" (WA saved msgs)
+**** "Notify Me" (sold-out → WA)
+**** Size Guide accordion (collapsible)
+*** Homepage Features
+**** Category filter tabs
+**** Gender filter (Girls/Boys/Unisex)
+**** Season/Occasion filter
+**** Sort: Newest first
+**** Featured / New Arrivals section
+**** Sale section
+*** Trust Signals on Storefront
+**** Seller photo + warm intro text
+**** Response time badge
+**** 🟢 Online status dot
+**** Real parent review screenshots
+**** "Seen on Real Kids" gallery
+**** Premium packaging image
+
+** 📱 PURCHASE HANDOFF
+*** WhatsApp Flow
+**** Button: "📱 Order via WhatsApp"
+**** wa.me pre-filled link (free, no API)
+**** Auto message includes:
+***** Product name
+***** Brand (if set)
+***** Selected size
+***** Price in ₦
+***** Strikethrough note if sale
+**** WA Business App (free upgrade)
+***** Away messages
+***** Quick reply templates
+***** Customer labels
+***** Response time stats
+**** "Ask a Question" button (2nd button)
+**** "Save for Later" → WA saved msgs
+*** Telegram Flow
+**** Button: "✈️ Order via Telegram"
+**** PHP Webhook (no persistent server)
+***** Telegram calls webhook.php
+***** PHP parses message + responds
+***** Reads product data from MariaDB
+**** Bot collects order info
+***** Product name (from click)
+***** Size selection
+***** Customer name
+***** Delivery address
+**** Sends clean summary to seller
+*** Sold-Out Handling
+**** "SOLD OUT" badge on size
+**** "🔔 Notify Me" button
+**** Pre-filled WA: "Please notify when back in stock"
+
+** 📦 PRODUCT SCHEMA
+*** REQUIRED Fields ✅
+**** Product Name
+**** Current Price (₦ integer, no decimals)
+**** Category (from 9 options)
+**** Gender (Girls/Boys/Unisex)
+**** At least 1 photo
+**** At least 1 size + stock count
+*** OPTIONAL Fields 🟡
+**** Original Price (shows strikethrough)
+**** Description (short paragraph)
+**** Material (e.g. 100% Cotton)
+**** Brand Name (e.g. Carter's)
+**** TikTok URL (video link)
+**** Season/Occasion Tag
+*** 9 Categories
+**** Newborn 👶 (0-3 months)
+**** Baby 🍼 (3-12 months)
+**** Toddler 🧒 (1-3 years)
+**** Girls 👧 (3-12 years)
+**** Boys 👦 (3-12 years)
+**** School Wear 🏫
+**** Special Occasions 🎉
+**** Pyjamas & Nightwear 🛏️
+**** Footwear 🩴
+*** Size System (Mixed)
+**** Age labels: 0-3M → 10-12Y
+**** Number labels: 2 → 14
+**** Custom: type any size label
+**** Per-size stock count
+***** stock = 0 → Sold Out badge
+***** stock > 0 → clickable
+
+-- 🛠️ TECH STACK (Hostinger)
+--- Hosting Platform
+---- Hostinger Shared Hosting
+----- MariaDB included FREE
+----- PHP included FREE
+----- HTTPS auto (Let's Encrypt)
+----- phpMyAdmin included
+----- File Manager deploy
+----- No VPS or extra server needed
+--- Frontend (Ultra Lightweight)
+---- Static index.html
+----- All CSS inline in <style>
+----- Alpine.js (15KB CDN)
+----- Vanilla JS fetch() for API
+----- Native loading="lazy" on images
+----- No build step required
+----- Total JS payload ~15KB
+--- Backend (PHP on Hostinger)
+---- /api/products.php
+----- Returns product JSON
+----- Filters by category/gender
+----- Cache-Control headers
+---- /api/status.php
+----- Returns seller online status
+---- /api/categories.php
+---- /admin/ (password protected)
+----- PHP session auth
+----- Add / Edit / Remove products
+----- Image upload (Multer equiv PHP)
+----- Size Manager component
+----- Toggle available/unavailable
+----- Toggle online/offline status
+---- /telegram-webhook.php
+----- PHP Telegram Bot SDK
+----- Handles webhook POSTs
+----- Reads from MariaDB
+---- config.php (outside public_html)
+----- DB credentials
+----- Admin password hash
+----- WA number
+----- Telegram bot token
+--- Database (MariaDB)
+---- products table
+----- id, name, description
+----- price, original_price (₦)
+----- category_id, gender
+----- material, brand, tiktok_url
+----- season_tag, available
+---- product_images table
+----- Unlimited photos per product
+----- sort_order (primary = 0)
+----- Stored in /uploads/products/
+---- product_sizes table
+----- size_label + stock_count
+----- Per-size availability
+---- categories table
+----- 9 categories + emoji + slug
+---- seller_config table
+----- seller_status (online/brb/offline)
+----- store_name, tagline
+----- wa_number, telegram_username
+----- delivery_info (store-wide)
+
+-- 🎨 BRAND & IDENTITY
+--- Visual Direction
+---- Premium + Trust-First
+---- Palette: warm neutrals
+----- Cream backgrounds
+----- Sage green accents
+----- Soft terracotta highlights
+---- Typography
+----- Serif font (elegance)
+----- Rounded sans (friendliness)
+---- Boutique-style store name
+----- "Little ___" / "Bloom ___"
+----- "Sunday ___" / "Grove ___"
+---- Minimal botanical logo/icon
+--- Tone of Voice
+---- "Personal Stylist" positioning
+---- Warm, expert, not transactional
+---- "Let me help you dress your child"
+---- Seller on homepage with photo
+
+-- 📣 MARKETING & GROWTH
+--- Free Channels (Zero Cost)
+---- WhatsApp Broadcast List
+----- New drop → photos + link
+----- Feels personal (not group)
+---- Parent WhatsApp Group Seeding
+----- 3 happy customers share link
+----- Each group = 50-200 parents
+---- Referral System
+----- "Send a friend → 10% off each"
+----- Name-based tracking (no app)
+----- Double reward (both parties)
+----- Refer 3 → free item option
+----- Digital share card for WA
+---- Outfit of the Week
+----- Weekly social post
+----- Link in bio → storefront
+--- Targeted Campaigns
+---- Birthday gifting market
+----- Gift wrap + message service
+----- Buyer + recipient = 2 leads
+---- School Calendar Strategy
+----- Uniform-adjacent pieces
+----- Predictable demand spikes
+---- Mum Blogger Micro-Influencers
+----- 500-10K followers
+----- Exchange outfits for post
+
+-- 🔄 RETENTION & LOYALTY
+--- "Remember Me" CRM System
+---- Simple Google Sheet tracker
+----- Parent name, child age/size
+----- Order date + next follow-up
+---- 3-month size-up reminder
+----- "Your little one must be growing!"
+---- Birthday outreach
+----- "Happy birthday! 🎂 New pieces?"
+---- Seasonal reach-outs
+----- "Summer coming! New light sets"
+---- "You might also love" messages
+--- VIP Tier
+---- 3+ orders = VIP status
+---- First look before public drop
+---- Early access to new stock
+--- Personal Touch
+---- Voice note thank-you (15sec)
+---- Personal reply as stylist
+---- Expert sizing advice per reply
+---- Exclusive first-look broadcasts
+
+@endmindmap
