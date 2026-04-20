@@ -92,6 +92,18 @@ async function main() {
   } catch (err) {
     console.error('\n❌ Connection failed:');
     console.error(`   ${err.message}`);
+    if (err.code) {
+      console.error(`   Error code: ${err.code}`);
+    }
+
+    if (err.code === 'ER_ACCESS_DENIED_ERROR') {
+      console.error('\n🎯 What this specific error means:');
+      console.error('   • The MySQL server was reached successfully');
+      console.error('   • One of these is wrong: DB_USER, DB_PASS, DB_NAME, or remote-host permission');
+      console.error('   • If using Hostinger remotely, allow this machine IP in Remote MySQL first');
+      console.error('   • If this app runs on the Hostinger server itself, use DB_HOST=localhost there');
+    }
+
     console.error('\n💡 Tips:');
     console.error('   • Check your .env DB_HOST, DB_USER, DB_PASS, DB_NAME values');
     console.error('   • On Hostinger: DB_HOST is usually "localhost" when on server');

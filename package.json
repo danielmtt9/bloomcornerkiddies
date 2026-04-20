@@ -1,6 +1,6 @@
 {
   "name": "bloomcornerkiddies-scripts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Developer utility scripts for Bloom Corner Kiddies setup",
   "type": "module",
   "scripts": {
