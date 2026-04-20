@@ -7,8 +7,8 @@
 //   NOT inside public_html/ — never web-accessible
 //
 // USAGE in PHP files:
-//   require_once __DIR__ . '/../config.php';   // from public_html/any.php
-//   require_once __DIR__ . '/../../config.php'; // from public_html/admin/any.php
+//   require_once __DIR__ . '/../config.php';    // from public_html/*.php
+//   require_once __DIR__ . '/../../config.php'; // from public_html/admin/*.php
 //
 // SETUP:
 //   1. Copy .env.example to .env (same directory as this file)
@@ -17,50 +17,77 @@
 //      php -r "echo password_hash('your_password', PASSWORD_BCRYPT);"
 // ==============================================================
 
-// --- Load .env file -------------------------------------------
-$env_file = __DIR__ . '/.env';
+function config_fail(string $message): never
+{
+    if (PHP_SAPI === 'cli') {
+        throw new RuntimeException($message);
+    }
 
-if (!file_exists($env_file)) {
-    die('FATAL: .env file not found. Please create it from .env.example');
+    http_response_code(500);
+    header('Content-Type: application/json');
+    exit(json_encode(['error' => 'Service unavailable']));
 }
 
-$lines = file($env_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-foreach ($lines as $line) {
-    $line = trim($line);
-    // Skip comments and empty lines
-    if ($line === '' || $line[0] === '#') continue;
-    if (!str_contains($line, '=')) continue;
+function load_env_file(string $envFile): void
+{
+    if (!file_exists($envFile)) {
+        config_fail('FATAL: .env file not found. Please create it from .env.example');
+    }
 
-    [$key, $value] = explode('=', $line, 2);
-    $key   = trim($key);
-    $value = trim($value, " \t\n\r\0\x0B\"'");
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if ($line === '' || $line[0] === '#') {
+            continue;
+        }
+        if (!str_contains($line, '=')) {
+            continue;
+        }
 
-    if (!array_key_exists($key, $_SERVER) && !array_key_exists($key, $_ENV)) {
-        putenv("$key=$value");
-        $_ENV[$key]    = $value;
-        $_SERVER[$key] = $value;
+        [$key, $value] = explode('=', $line, 2);
+        $key = trim($key);
+        $value = trim($value, " \t\n\r\0\x0B\"'");
+
+        if (!array_key_exists($key, $_SERVER) && !array_key_exists($key, $_ENV)) {
+            putenv("$key=$value");
+            $_ENV[$key] = $value;
+            $_SERVER[$key] = $value;
+        }
     }
 }
 
+function env_value(string $key, string $default = ''): string
+{
+    $value = getenv($key);
+    if ($value === false || $value === null || $value === '') {
+        return $default;
+    }
+
+    return $value;
+}
+
+load_env_file(__DIR__ . '/.env');
+
 // --- Database Configuration -----------------------------------
-define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_NAME') ?: '');
-define('DB_USER', getenv('DB_USER') ?: '');
-define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_HOST', env_value('DB_HOST', 'localhost'));
+define('DB_PORT', (int) env_value('DB_PORT', '3306'));
+define('DB_NAME', env_value('DB_NAME'));
+define('DB_USER', env_value('DB_USER'));
+define('DB_PASS', env_value('DB_PASS'));
 
 // --- Admin Panel ----------------------------------------------
-define('ADMIN_PASSWORD_HASH', getenv('ADMIN_PASSWORD_HASH') ?: '');
+define('ADMIN_PASSWORD_HASH', env_value('ADMIN_PASSWORD_HASH'));
 
 // --- Telegram -------------------------------------------------
-define('TELEGRAM_BOT_TOKEN', getenv('TELEGRAM_BOT_TOKEN') ?: '');
-define('TELEGRAM_SELLER_CHAT_ID', getenv('TELEGRAM_SELLER_CHAT_ID') ?: '');
+define('TELEGRAM_BOT_TOKEN', env_value('TELEGRAM_BOT_TOKEN'));
+define('TELEGRAM_SELLER_CHAT_ID', env_value('TELEGRAM_SELLER_CHAT_ID'));
 
-// --- Store Contact -------------------------------------------
-define('WA_NUMBER',      getenv('WA_NUMBER')      ?: '2349049308656');
-define('TELEGRAM_LINK',  getenv('TELEGRAM_LINK')  ?: 'https://t.me/+2349049308656');
+// --- Store Contact --------------------------------------------
+define('WA_NUMBER', env_value('WA_NUMBER', '2349049308656'));
+define('TELEGRAM_LINK', env_value('TELEGRAM_LINK', 'https://t.me/+2349049308656'));
 
 // --- App Environment ------------------------------------------
-define('APP_ENV', getenv('APP_ENV') ?: 'production');
+define('APP_ENV', env_value('APP_ENV', 'production'));
 
 if (APP_ENV === 'development') {
     ini_set('display_errors', '1');
@@ -72,39 +99,54 @@ if (APP_ENV === 'development') {
 }
 
 // --- Database Connection Helper -------------------------------
-function get_db(): PDO {
+function get_db(): PDO
+{
     static $pdo = null;
-    if ($pdo === null) {
-        try {
-            $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4';
-            $pdo = new PDO($dsn, DB_USER, DB_PASS, [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-            ]);
-        } catch (PDOException $e) {
-            if (APP_ENV === 'development') {
-                die('DB connection failed: ' . $e->getMessage());
-            }
-            http_response_code(500);
-            die(json_encode(['error' => 'Service unavailable']));
-        }
+    if ($pdo !== null) {
+        return $pdo;
     }
+
+    try {
+        $dsn = sprintf(
+            'mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4',
+            DB_HOST,
+            DB_PORT,
+            DB_NAME
+        );
+
+        $pdo = new PDO($dsn, DB_USER, DB_PASS, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        ]);
+    } catch (PDOException $e) {
+        if (APP_ENV === 'development' || PHP_SAPI === 'cli') {
+            throw new RuntimeException('DB connection failed: ' . $e->getMessage(), 0, $e);
+        }
+
+        config_fail('Database connection failed.');
+    }
+
     return $pdo;
 }
 
 // --- seller_config Helper -------------------------------------
-function get_config(string $key, string $default = ''): string {
+function get_config(string $key, string $default = ''): string
+{
     static $cache = [];
-    if (isset($cache[$key])) return $cache[$key];
+    if (array_key_exists($key, $cache)) {
+        return $cache[$key];
+    }
+
     try {
-        $pdo  = get_db();
+        $pdo = get_db();
         $stmt = $pdo->prepare('SELECT value FROM seller_config WHERE `key` = ? LIMIT 1');
         $stmt->execute([$key]);
-        $row  = $stmt->fetch();
-        $cache[$key] = $row ? $row['value'] : $default;
-    } catch (Exception $e) {
+        $row = $stmt->fetch();
+        $cache[$key] = $row ? (string) $row['value'] : $default;
+    } catch (Throwable $e) {
         $cache[$key] = $default;
     }
+
     return $cache[$key];
 }

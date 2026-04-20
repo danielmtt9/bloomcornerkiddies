@@ -1,0 +1,89 @@
+# generated: 2026-04-20
+# last_updated: 2026-04-20
+# project: bloomrocxx
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+#
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Story Status:
+#   - backlog: Story only exists in backlog/planning artifacts
+#   - ready-for-dev: Story file created in implementation artifacts
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - This sprint-status file is generated from epics.md Lane A only.
+# - Lane B is deferred engineering and is intentionally excluded from active sprint execution.
+# - Lane C is non-engineering operational/content work and is intentionally excluded from developer sprint execution.
+# - First implementation story: 0-1-environment-config-bootstrap
+# - Developer should follow the exact order documented in epics.md "Lane A Execution Order".
+
+generated: 2026-04-20
+last_updated: 2026-04-20
+project: bloomrocxx
+project_key: NOKEY
+tracking_system: file-system
+story_location: "_bmad-output/implementation-artifacts"
+
+development_status:
+  epic-0: in-progress
+  0-1-environment-config-bootstrap: ready-for-dev
+  0-2-repository-safety-deployment-pipeline: review
+  0-3-shared-php-bootstrap-helpers: review
+  epic-0-retrospective: optional
+
+  epic-1: backlog
+  1-1-core-commerce-tables: ready-for-dev
+  1-2-store-settings-referral-tables: ready-for-dev
+  1-3-migration-seed-execution-path: ready-for-dev
+  epic-1-retrospective: optional
+
+  epic-2: backlog
+  2-1-admin-login: ready-for-dev
+  2-2-session-guard-logout: ready-for-dev
+  2-3-admin-layout-dashboard: ready-for-dev
+  epic-2-retrospective: optional
+
+  epic-3: backlog
+  3-1-product-list-view: ready-for-dev
+  3-2-product-create-edit-form: ready-for-dev
+  3-3-size-manager-quick-stock-updates: ready-for-dev
+  3-4-product-image-uploads: ready-for-dev
+  3-5-edit-hide-delete: ready-for-dev
+  epic-3-retrospective: optional
+
+  epic-4: backlog
+  4-1-store-settings-page: ready-for-dev
+  4-2-seller-status-control: ready-for-dev
+  4-3-referral-code-admin: ready-for-dev
+  4-4-admin-password-change: ready-for-dev
+  epic-4-retrospective: optional
+
+  epic-5: backlog
+  5-1-storefront-product-category-api: ready-for-dev
+  5-2-storefront-shell: ready-for-dev
+  5-3-hero-trust-section: ready-for-dev
+  5-4-product-grid-filters: ready-for-dev
+  5-5-shareable-product-routing: ready-for-dev
+  epic-5-retrospective: optional
+
+  epic-6: backlog
+  6-1-product-detail-view: ready-for-dev
+  6-2-whatsapp-order-enquiry-handoff: ready-for-dev
+  6-3-telegram-link-save-for-later-notify-me: ready-for-dev
+  6-4-storefront-seller-status: ready-for-dev
+  6-5-ga4-snippet-utm-compatible-link-handling: ready-for-dev
+  epic-6-retrospective: optional
