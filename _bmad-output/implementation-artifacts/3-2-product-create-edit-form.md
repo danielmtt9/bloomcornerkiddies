@@ -1,6 +1,6 @@
 # Story 3.2: Product Create/Edit Form
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -18,15 +18,15 @@ so that product data entered in admin is sufficient to power storefront browsing
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 — Build the create/edit form surface (AC: 1, 2, 3)
-  - [ ] Implement required and optional inputs.
-  - [ ] Use a multi-select or equivalent UX for `categories[]`.
-- [ ] Task 2 — Persist products and category memberships (AC: 3, 4, 5)
-  - [ ] Save products and `product_categories` transactionally.
-  - [ ] Load existing values correctly in edit mode.
-- [ ] Task 3 — Verify create/edit behavior (AC: 1, 2, 3, 4, 5)
-  - [ ] Add coverage or smoke verification.
-  - [ ] Record results in this story.
+- [x] Task 1 — Build the create/edit form surface (AC: 1, 2, 3)
+  - [x] Implement required and optional inputs.
+  - [x] Use a multi-select or equivalent UX for `categories[]`.
+- [x] Task 2 — Persist products and category memberships (AC: 3, 4, 5)
+  - [x] Save products and `product_categories` transactionally.
+  - [x] Load existing values correctly in edit mode.
+- [x] Task 3 — Verify create/edit behavior (AC: 1, 2, 3, 4, 5)
+  - [x] Add coverage or smoke verification.
+  - [x] Record results in this story.
 
 ## Dev Notes
 
@@ -40,10 +40,30 @@ gpt-5
 
 ### Debug Log References
 
+- `php -l public_html/admin/add.php`
+- `php -l public_html/admin/edit.php`
+- `php -l public_html/admin/partials/product-form.php`
+- `npm run test-admin-products`
+- `npm run test-admin-products-db`
+
 ### Completion Notes List
 
+- Added `/admin/add.php` and `/admin/edit.php` on top of a shared product form partial with required and optional fields aligned to the PRD.
+- Category selection now uses `categories[]` multi-select backed by the `categories` table and preserves selection on edit.
+- Product create/update flows now write `products`, `product_categories`, and `product_sizes` inside one transaction and rehydrate existing values for edit mode.
+
 ### File List
+
+- public_html/admin/add.php
+- public_html/admin/edit.php
+- public_html/admin/partials/product-form.php
+- public_html/includes/products.php
+- scripts/test-admin-products.php
+- scripts/test-admin-products.mjs
+- package.json
+- _bmad-output/implementation-artifacts/3-2-product-create-edit-form.md
 
 ### Change Log
 
 - Story created from Lane A sprint plan.
+- Implemented the create/edit product form and transactional category persistence.

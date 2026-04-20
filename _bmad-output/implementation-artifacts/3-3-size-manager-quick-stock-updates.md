@@ -1,6 +1,6 @@
 # Story 3.3: Size Manager & Quick Stock Updates
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -17,15 +17,15 @@ so that storefront availability reflects real stock without slow admin workflows
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 — Implement size-row management in add/edit flows (AC: 1, 2)
-  - [ ] Support add/remove/update of size rows before submit.
-  - [ ] Persist size rows with stock and sold-out state.
-- [ ] Task 2 — Implement quick stock updates from the list view (AC: 3, 4)
-  - [ ] Add a focused update path for size-level stock changes.
-  - [ ] Keep storefront sold-out semantics aligned with stored data.
-- [ ] Task 3 — Verify inventory flows (AC: 1, 2, 3, 4)
-  - [ ] Add coverage or smoke verification.
-  - [ ] Record results in this story.
+- [x] Task 1 — Implement size-row management in add/edit flows (AC: 1, 2)
+  - [x] Support add/remove/update of size rows before submit.
+  - [x] Persist size rows with stock and sold-out state.
+- [x] Task 2 — Implement quick stock updates from the list view (AC: 3, 4)
+  - [x] Add a focused update path for size-level stock changes.
+  - [x] Keep storefront sold-out semantics aligned with stored data.
+- [x] Task 3 — Verify inventory flows (AC: 1, 2, 3, 4)
+  - [x] Add coverage or smoke verification.
+  - [x] Record results in this story.
 
 ## Dev Notes
 
@@ -39,10 +39,27 @@ gpt-5
 
 ### Debug Log References
 
+- `php -l public_html/admin/stock.php`
+- `npm run test-admin-products`
+- `npm run test-admin-products-db`
+
 ### Completion Notes List
 
+- Added quick-add size chips plus dynamic add/remove size rows in the shared product form.
+- Size persistence now stores stock quantity and explicit sold-out state while normalizing `stock_qty = 0` to sold-out semantics.
+- Added `/admin/stock.php` as the focused quick stock update path linked from the product list.
+
 ### File List
+
+- public_html/admin/stock.php
+- public_html/admin/partials/product-form.php
+- public_html/includes/products.php
+- scripts/test-admin-products.php
+- scripts/test-admin-products.mjs
+- package.json
+- _bmad-output/implementation-artifacts/3-3-size-manager-quick-stock-updates.md
 
 ### Change Log
 
 - Story created from Lane A sprint plan.
+- Implemented size management and quick stock updates.

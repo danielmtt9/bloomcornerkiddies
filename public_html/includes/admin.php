@@ -170,7 +170,7 @@ function admin_status_badge(string $status): string
 function admin_navigation_items(): array
 {
     return [
-        'products' => ['label' => 'Products', 'href' => '/admin/index.php'],
+        'products' => ['label' => 'Products', 'href' => '/admin/products.php'],
         'referrals' => ['label' => 'Referrals', 'href' => '/admin/referrals.php'],
         'settings' => ['label' => 'Settings', 'href' => '/admin/settings.php'],
         'logout' => ['label' => 'Logout', 'href' => '/admin/logout.php'],
@@ -421,6 +421,141 @@ function admin_page_start(string $title, string $activeNav = 'products'): void
       cursor: pointer;
     }
     .button-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .field-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      min-height: 46px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      font: inherit;
+      background: #fff;
+    }
+    .field textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+    .hint {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .stack-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .chip-button {
+      min-height: 44px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      font: inherit;
+      color: var(--text);
+    }
+    .checkbox-grid {
+      display: grid;
+      gap: 8px;
+    }
+    .checkbox {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .checkbox input {
+      margin-top: 4px;
+    }
+    .danger-link {
+      color: var(--danger);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .thumbnail {
+      width: 64px;
+      height: 80px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+    .status-badge.is-hidden {
+      color: var(--danger);
+      background: #fff1ec;
+      border-color: #f7c4b0;
+    }
+    .status-badge.is-active {
+      color: var(--ok);
+      background: #edfdf1;
+      border-color: #b7ebc1;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .actions a, .actions button {
+      min-height: 40px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+    }
+    .actions .primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff8f1;
+    }
+    .size-table {
+      width: 100%;
+      min-width: 0;
+    }
+    .size-table input[type="number"],
+    .size-table input[type="text"] {
+      min-height: 42px;
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      font: inherit;
+    }
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+    }
+    .image-card {
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
     @media (max-width: 480px) {
       .admin-shell,
       .admin-header__inner {

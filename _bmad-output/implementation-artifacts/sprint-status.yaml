@@ -57,12 +57,12 @@ development_status:
   2-3-admin-layout-dashboard: done
   epic-2-retrospective: optional
 
-  epic-3: backlog
-  3-1-product-list-view: ready-for-dev
-  3-2-product-create-edit-form: ready-for-dev
-  3-3-size-manager-quick-stock-updates: ready-for-dev
-  3-4-product-image-uploads: ready-for-dev
-  3-5-edit-hide-delete: ready-for-dev
+  epic-3: done
+  3-1-product-list-view: done
+  3-2-product-create-edit-form: done
+  3-3-size-manager-quick-stock-updates: done
+  3-4-product-image-uploads: done
+  3-5-edit-hide-delete: done
   epic-3-retrospective: optional
 
   epic-4: backlog

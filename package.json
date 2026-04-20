@@ -12,6 +12,8 @@
     "test-admin-auth":"php scripts/test-admin-auth.php",
     "test-admin-dashboard":"php scripts/test-admin-dashboard.php",
     "test-admin-dashboard-db":"node scripts/test-admin-dashboard.mjs",
+    "test-admin-products":"php scripts/test-admin-products.php",
+    "test-admin-products-db":"node scripts/test-admin-products.mjs",
     "test-db":    "node scripts/test-connection.mjs",
     "test-schema":"node scripts/verify-schema.mjs",
     "deploy-key": "node scripts/generate-deploy-key.mjs",
