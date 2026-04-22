@@ -1,6 +1,6 @@
 # Story 6.2: WhatsApp Order & Enquiry Handoff
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -18,15 +18,15 @@ so that I do not need to retype item details.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 — Implement WhatsApp handoff templates (AC: 1, 2, 3, 4)
-  - [ ] Build order and enquiry variants.
-  - [ ] Encode message content safely.
-- [ ] Task 2 — Implement CTA behavior and presentation (AC: 5)
-  - [ ] Make WhatsApp the clear primary handoff action.
-  - [ ] Keep the CTA mobile-prominent.
-- [ ] Task 3 — Verify WhatsApp handoff behavior (AC: 1, 2, 3, 4, 5)
-  - [ ] Add smoke/test verification.
-  - [ ] Record results in this story.
+- [x] Task 1 — Implement WhatsApp handoff templates (AC: 1, 2, 3, 4)
+  - [x] Build order and enquiry variants.
+  - [x] Encode message content safely.
+- [x] Task 2 — Implement CTA behavior and presentation (AC: 5)
+  - [x] Make WhatsApp the clear primary handoff action.
+  - [x] Keep the CTA mobile-prominent.
+- [x] Task 3 — Verify WhatsApp handoff behavior (AC: 1, 2, 3, 4, 5)
+  - [x] Add smoke/test verification.
+  - [x] Record results in this story.
 
 ## Dev Notes
 
@@ -40,10 +40,19 @@ gpt-5
 
 ### Debug Log References
 
+- `npm run test-storefront-handoff`
+
 ### Completion Notes List
 
+- Added prefilled WhatsApp enquiry and size-specific order templates with encoded product context and optional referral code support.
+- Kept WhatsApp as the primary commerce CTA in the detail surface, including sold-out-aware per-size handling.
+
 ### File List
+
+- `public_html/index.html`
+- `scripts/test-storefront-handoff.mjs`
 
 ### Change Log
 
 - Story created from Lane A sprint plan.
+- Story completed and verified for Sprint 6.

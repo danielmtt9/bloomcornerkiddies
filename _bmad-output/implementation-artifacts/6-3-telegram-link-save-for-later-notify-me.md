@@ -1,6 +1,6 @@
 # Story 6.3: Telegram Link, Save for Later, Notify Me
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -17,15 +17,15 @@ so that I have a non-WA backup path and can retain product context for later.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 — Implement Telegram personal-link behavior (AC: 1)
-  - [ ] Pull the link from config.
-  - [ ] Keep bot behavior out of MVP.
-- [ ] Task 2 — Implement Save for Later and Notify Me (AC: 2, 3, 4)
-  - [ ] Support WA saved messages path and clipboard fallback.
-  - [ ] Replace CTA when all sizes are sold out.
-- [ ] Task 3 — Verify alternative actions (AC: 1, 2, 3, 4)
-  - [ ] Add smoke/test verification.
-  - [ ] Record results in this story.
+- [x] Task 1 — Implement Telegram personal-link behavior (AC: 1)
+  - [x] Pull the link from config.
+  - [x] Keep bot behavior out of MVP.
+- [x] Task 2 — Implement Save for Later and Notify Me (AC: 2, 3, 4)
+  - [x] Support WA saved messages path and clipboard fallback.
+  - [x] Replace CTA when all sizes are sold out.
+- [x] Task 3 — Verify alternative actions (AC: 1, 2, 3, 4)
+  - [x] Add smoke/test verification.
+  - [x] Record results in this story.
 
 ## Dev Notes
 
@@ -39,10 +39,19 @@ gpt-5
 
 ### Debug Log References
 
+- `npm run test-storefront-handoff`
+
 ### Completion Notes List
 
+- Telegram CTA remains a seller personal-link handoff sourced from `seller_config.telegram_link`; no bot behavior was introduced into MVP scope.
+- Added Save for Later with WhatsApp saved-messages intent plus clipboard fallback, and Notify Me behavior for fully sold-out products.
+
 ### File List
+
+- `public_html/index.html`
+- `scripts/test-storefront-handoff.mjs`
 
 ### Change Log
 
 - Story created from Lane A sprint plan.
+- Story completed and verified for Sprint 6.

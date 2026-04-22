@@ -1,6 +1,6 @@
 # Story 6.4: Storefront Seller Status
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -16,15 +16,15 @@ so that storefront status reads consistently across hero and product detail surf
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 — Normalize storefront status presentation (AC: 1, 3)
-  - [ ] Use consistent state mapping in hero and detail views.
-  - [ ] Reuse one display contract.
-- [ ] Task 2 — Wire status endpoint updates (AC: 2)
-  - [ ] Pull from `/api/status.php`.
-  - [ ] Keep polling/state behavior consistent.
-- [ ] Task 3 — Verify status behavior (AC: 1, 2, 3)
-  - [ ] Add smoke/test verification.
-  - [ ] Record results in this story.
+- [x] Task 1 — Normalize storefront status presentation (AC: 1, 3)
+  - [x] Use consistent state mapping in hero and detail views.
+  - [x] Reuse one display contract.
+- [x] Task 2 — Wire status endpoint updates (AC: 2)
+  - [x] Pull from `/api/status.php`.
+  - [x] Keep polling/state behavior consistent.
+- [x] Task 3 — Verify status behavior (AC: 1, 2, 3)
+  - [x] Add smoke/test verification.
+  - [x] Record results in this story.
 
 ## Dev Notes
 
@@ -38,10 +38,21 @@ gpt-5
 
 ### Debug Log References
 
+- `npm run test-storefront-shell`
+- `npm run test-storefront-handoff`
+
 ### Completion Notes List
 
+- Reused the status contract from `/api/status.php` across hero and detail surfaces so `online`, `brb`, and `offline` map consistently.
+- Detail view now exposes the same seller status signal and message alongside delivery guidance.
+
 ### File List
+
+- `public_html/index.html`
+- `public_html/includes/storefront.php`
+- `scripts/test-storefront-handoff.mjs`
 
 ### Change Log
 
 - Story created from Lane A sprint plan.
+- Story completed and verified for Sprint 6.

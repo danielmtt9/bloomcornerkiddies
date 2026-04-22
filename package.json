@@ -18,6 +18,7 @@
     "test-admin-settings-db":"node scripts/test-admin-settings.mjs",
     "test-storefront-shell":"node scripts/test-storefront-shell.mjs",
     "test-storefront-api":"node scripts/test-storefront-api.mjs",
+    "test-storefront-handoff":"node scripts/test-storefront-handoff.mjs",
     "test-db":    "node scripts/test-connection.mjs",
     "test-schema":"node scripts/verify-schema.mjs",
     "deploy-key": "node scripts/generate-deploy-key.mjs",

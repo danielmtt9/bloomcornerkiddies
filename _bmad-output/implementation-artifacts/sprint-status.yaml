@@ -1,5 +1,5 @@
 # generated: 2026-04-20
-# last_updated: 2026-04-20
+# last_updated: 2026-04-21
 # project: bloomrocxx
 # project_key: NOKEY
 # tracking_system: file-system
@@ -32,7 +32,7 @@
 # - Developer should follow the exact order documented in epics.md "Lane A Execution Order".
 
 generated: 2026-04-20
-last_updated: 2026-04-20
+last_updated: 2026-04-21
 project: bloomrocxx
 project_key: NOKEY
 tracking_system: file-system
@@ -80,10 +80,10 @@ development_status:
   5-5-shareable-product-routing: done
   epic-5-retrospective: optional
 
-  epic-6: backlog
-  6-1-product-detail-view: ready-for-dev
-  6-2-whatsapp-order-enquiry-handoff: ready-for-dev
-  6-3-telegram-link-save-for-later-notify-me: ready-for-dev
-  6-4-storefront-seller-status: ready-for-dev
-  6-5-ga4-snippet-utm-compatible-link-handling: ready-for-dev
+  epic-6: done
+  6-1-product-detail-view: done
+  6-2-whatsapp-order-enquiry-handoff: done
+  6-3-telegram-link-save-for-later-notify-me: done
+  6-4-storefront-seller-status: done
+  6-5-ga4-snippet-utm-compatible-link-handling: done
   epic-6-retrospective: optional

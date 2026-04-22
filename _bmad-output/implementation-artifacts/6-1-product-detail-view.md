@@ -1,6 +1,6 @@
 # Story 6.1: Product Detail View
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -17,15 +17,15 @@ so that I can inspect the item, sizes, pricing, and delivery info before messagi
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 — Build the detail view layout (AC: 1, 2)
-  - [ ] Render media, pricing, metadata, and size states.
-  - [ ] Keep optional fields conditional.
-- [ ] Task 2 — Wire delivery and size-guide content (AC: 3, 4)
-  - [ ] Pull delivery info from seller config.
-  - [ ] Add the size-guide interaction.
-- [ ] Task 3 — Verify detail behavior (AC: 1, 2, 3, 4)
-  - [ ] Add smoke/test verification.
-  - [ ] Record results in this story.
+- [x] Task 1 — Build the detail view layout (AC: 1, 2)
+  - [x] Render media, pricing, metadata, and size states.
+  - [x] Keep optional fields conditional.
+- [x] Task 2 — Wire delivery and size-guide content (AC: 3, 4)
+  - [x] Pull delivery info from seller config.
+  - [x] Add the size-guide interaction.
+- [x] Task 3 — Verify detail behavior (AC: 1, 2, 3, 4)
+  - [x] Add smoke/test verification.
+  - [x] Record results in this story.
 
 ## Dev Notes
 
@@ -39,10 +39,23 @@ gpt-5
 
 ### Debug Log References
 
+- `npm run test-storefront-shell`
+- `npm run test-storefront-api`
+- `npm run test-storefront-handoff`
+
 ### Completion Notes List
 
+- Added a full storefront detail overlay with gallery thumbnails, conditional metadata, a collapsible size guide, and delivery information from `seller_config.delivery_info`.
+- Product payload now includes `image_urls[]` so the detail view can render a deterministic image gallery beyond the primary card image.
+
 ### File List
+
+- `public_html/index.html`
+- `public_html/includes/storefront.php`
+- `scripts/test-storefront-api.mjs`
+- `scripts/test-storefront-handoff.mjs`
 
 ### Change Log
 
 - Story created from Lane A sprint plan.
+- Story completed and verified for Sprint 6.

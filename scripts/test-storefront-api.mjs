@@ -71,8 +71,8 @@ async function main() {
       [productId, '3-4Y', 2, 0, productId, '4-5Y', 0, 1]
     );
     await connection.execute(
-      'INSERT INTO product_images (product_id, file_path, sort_order) VALUES (?, ?, ?)',
-      [productId, 'uploads/products/test/primary.jpg', 0]
+      'INSERT INTO product_images (product_id, file_path, sort_order) VALUES (?, ?, ?), (?, ?, ?)',
+      [productId, 'uploads/products/test/primary.jpg', 0, productId, 'uploads/products/test/secondary.jpg', 1]
     );
 
     const [products] = await connection.execute(
@@ -85,6 +85,7 @@ async function main() {
           p.gender,
           p.is_available,
           primary_image.file_path AS primary_image_path,
+          image_rows.images_json,
           size_rows.sizes_json,
           category_rows.categories_json,
           stock_rows.has_in_stock
@@ -98,6 +99,13 @@ async function main() {
            GROUP BY product_id
          ) mins ON mins.product_id = pi.product_id AND mins.min_sort_order = pi.sort_order
        ) primary_image ON primary_image.product_id = p.id
+       LEFT JOIN (
+         SELECT
+           pi.product_id,
+           CONCAT('[', GROUP_CONCAT(JSON_OBJECT('file_path', pi.file_path, 'sort_order', pi.sort_order) ORDER BY pi.sort_order, pi.id SEPARATOR ','), ']') AS images_json
+         FROM product_images pi
+         GROUP BY pi.product_id
+       ) image_rows ON image_rows.product_id = p.id
        LEFT JOIN (
          SELECT
            ps.product_id,
@@ -124,9 +132,11 @@ async function main() {
 
     assert(products.length === 1, 'Expected storefront products query to return seeded product.');
     const product = products[0];
+    const images = JSON.parse(product.images_json);
     const sizes = JSON.parse(product.sizes_json);
     const categories = JSON.parse(product.categories_json);
     assert(product.primary_image_path.includes('primary.jpg'), 'Expected primary_image_url source path.');
+    assert(Array.isArray(images) && images.length === 2, 'Expected gallery images payload.');
     assert(Array.isArray(sizes) && sizes.length === 2, 'Expected sizes[] payload.');
     assert(Array.isArray(categories) && categories.some((row) => row.slug === 'girls') && categories.some((row) => row.slug === 'occasions'), 'Expected categories[] payload with multi-category membership.');
     assert(Number(product.has_in_stock) === 1, 'Expected badge stock state to reflect in-stock sizes.');
@@ -144,13 +154,14 @@ async function main() {
     const [statusRows] = await connection.execute(
       `SELECT \`key\`, value
        FROM seller_config
-       WHERE \`key\` IN ('seller_status', 'status_message', 'wa_number', 'telegram_link')
+       WHERE \`key\` IN ('seller_status', 'status_message', 'wa_number', 'telegram_link', 'delivery_info')
        ORDER BY \`key\` ASC`
     );
     const statusMap = new Map(statusRows.map((row) => [row.key, row.value]));
     assert(statusMap.get('seller_status') === 'online', 'Expected status payload to read seller_status.');
     assert(statusMap.get('status_message') === 'Replies within one hour', 'Expected status payload to include message.');
     assert(statusMap.get('telegram_link') === 'https://t.me/test-link', 'Expected status payload to include Telegram link.');
+    assert(statusMap.has('delivery_info'), 'Expected status payload source to include delivery info.');
 
     const [categoryRows] = await connection.execute(
       'SELECT slug FROM categories ORDER BY sort_order ASC'

@@ -39,6 +39,7 @@ SELECT
     p.season_tag,
     p.tiktok_url,
     COALESCE(primary_image.file_path, '') AS primary_image_path,
+    COALESCE(image_rows.images_json, '[]') AS images_json,
     COALESCE(size_rows.sizes_json, '[]') AS sizes_json,
     COALESCE(category_rows.categories_json, '[]') AS categories_json,
     COALESCE(stock_rows.has_in_stock, 0) AS has_in_stock,
@@ -55,6 +56,23 @@ LEFT JOIN (
         GROUP BY product_id
     ) mins ON mins.product_id = pi.product_id AND mins.min_sort_order = pi.sort_order
 ) primary_image ON primary_image.product_id = p.id
+LEFT JOIN (
+    SELECT
+        pi.product_id,
+        CONCAT(
+            '[',
+            GROUP_CONCAT(
+                JSON_OBJECT(
+                    'file_path', pi.file_path,
+                    'sort_order', pi.sort_order
+                )
+                ORDER BY pi.sort_order, pi.id SEPARATOR ','
+            ),
+            ']'
+        ) AS images_json
+    FROM product_images pi
+    GROUP BY pi.product_id
+) image_rows ON image_rows.product_id = p.id
 LEFT JOIN (
     SELECT
         ps.product_id,
@@ -113,6 +131,7 @@ GROUP BY
     p.season_tag,
     p.tiktok_url,
     primary_image.file_path,
+    image_rows.images_json,
     size_rows.sizes_json,
     category_rows.categories_json,
     stock_rows.has_in_stock,
@@ -131,9 +150,20 @@ function storefront_products_payload(?string $categorySlug = null): array
 {
     $products = [];
     foreach (storefront_product_rows($categorySlug) as $row) {
+        $images = json_decode((string) $row['images_json'], true, 512, JSON_THROW_ON_ERROR);
         $sizes = json_decode((string) $row['sizes_json'], true, 512, JSON_THROW_ON_ERROR);
         $categories = json_decode((string) $row['categories_json'], true, 512, JSON_THROW_ON_ERROR);
         $soldOut = ((int) $row['has_sizes'] === 1) && ((int) $row['has_in_stock'] === 0);
+        $imageUrls = [];
+
+        foreach ($images as $image) {
+            $filePath = (string) ($image['file_path'] ?? '');
+            if ($filePath === '') {
+                continue;
+            }
+
+            $imageUrls[] = '/' . ltrim($filePath, '/');
+        }
 
         $products[] = [
             'id' => (int) $row['id'],
@@ -147,6 +177,7 @@ function storefront_products_payload(?string $categorySlug = null): array
             'season_tag' => $row['season_tag'] === null ? null : (string) $row['season_tag'],
             'tiktok_url' => $row['tiktok_url'] === null ? null : (string) $row['tiktok_url'],
             'primary_image_url' => (string) $row['primary_image_path'] !== '' ? '/' . ltrim((string) $row['primary_image_path'], '/') : '',
+            'image_urls' => $imageUrls,
             'sizes' => $sizes,
             'categories' => $categories,
             'badges' => [
@@ -191,6 +222,7 @@ function storefront_status_payload(): array
         'message' => get_config('status_message', 'Replies as soon as possible.'),
         'wa_number' => get_config('wa_number', WA_NUMBER),
         'telegram_link' => get_config('telegram_link', TELEGRAM_LINK),
+        'delivery_info' => get_config('delivery_info', 'Delivery details are confirmed in chat before dispatch.'),
         'store_name' => get_config('store_name', 'Bloom Corner Kiddies'),
         'tagline' => get_config('tagline', 'Beautiful kids wear, ready for your next message.'),
         'intro_text' => get_config('intro_text', 'Browse the catalogue and message us when you find something you love.'),
