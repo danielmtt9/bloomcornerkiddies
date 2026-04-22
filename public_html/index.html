@@ -3,12 +3,657 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bloom Corner Kiddies</title>
+  <title>Bloom Corner Kiddies | Kids Clothes Storefront</title>
+  <meta name="description" content="Browse Bloom Corner Kiddies for beautiful kids clothes, trust-first shopping, and direct WhatsApp or Telegram handoff.">
+  <meta property="og:title" content="Bloom Corner Kiddies | Kids Clothes Storefront">
+  <meta property="og:description" content="Browse trusted kids fashion, filter by category, and share product links instantly.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="/">
+  <meta property="og:image" content="/uploads/README.md">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PLACEHOLDER');
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #fff8f0;
+      --surface: rgba(255,255,255,0.88);
+      --surface-strong: #fffdf9;
+      --line: rgba(88, 49, 24, 0.12);
+      --text: #22160f;
+      --muted: #715843;
+      --accent: #d05b23;
+      --accent-soft: #ffe1c8;
+      --accent-deep: #7f3415;
+      --ok: #19633f;
+      --warn: #9d6308;
+      --shadow: 0 20px 50px rgba(93, 54, 24, 0.12);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-width: 0; overflow-x: clip; background:
+      radial-gradient(circle at top left, rgba(255, 218, 188, 0.7), transparent 34%),
+      linear-gradient(180deg, #fff6ed 0%, #fffefb 100%);
+      color: var(--text);
+      font-family: "Manrope", sans-serif;
+    }
+    img { max-width: 100%; display: block; }
+    button, select { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    .page {
+      width: min(100%, 1180px);
+      margin: 0 auto;
+      padding: 16px;
+    }
+    .shell {
+      display: grid;
+      gap: 18px;
+      padding-bottom: 48px;
+    }
+    .hero {
+      background:
+        linear-gradient(135deg, rgba(255, 230, 205, 0.92), rgba(255, 250, 243, 0.96)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23f2c6a3' stroke-width='1'%3E%3Ccircle cx='30' cy='30' r='18'/%3E%3Ccircle cx='88' cy='44' r='12'/%3E%3Cpath d='M18 88c18-8 34-8 48 0'/%3E%3C/g%3E%3C/svg%3E");
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -100px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(255, 215, 181, 0.45);
+      filter: blur(12px);
+    }
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 20px;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.78rem;
+      color: var(--accent-deep);
+      font-weight: 800;
+    }
+    .title {
+      margin: 0;
+      font-family: "Fraunces", serif;
+      font-size: clamp(2.2rem, 7vw, 4rem);
+      line-height: 0.96;
+      max-width: 9ch;
+    }
+    .tagline {
+      margin: 12px 0 0;
+      font-size: clamp(1rem, 3vw, 1.15rem);
+      color: var(--muted);
+      max-width: 34rem;
+      line-height: 1.6;
+    }
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 24px rgba(90, 52, 27, 0.07);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .pill strong { color: var(--text); }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 800;
+    }
+    .cta--primary {
+      background: var(--accent);
+      color: #fff9f3;
+      box-shadow: 0 12px 24px rgba(208, 91, 35, 0.28);
+    }
+    .cta--secondary {
+      background: rgba(255,255,255,0.8);
+      border-color: var(--line);
+    }
+    .trust-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      margin-top: 18px;
+    }
+    .trust-card {
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+    }
+    .trust-card h3 {
+      margin: 0 0 6px;
+      font-size: 0.96rem;
+    }
+    .trust-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .section {
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: end;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .section-head h2 {
+      margin: 0;
+      font-family: "Fraunces", serif;
+      font-size: clamp(1.5rem, 5vw, 2rem);
+    }
+    .section-head p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+    .filters {
+      display: grid;
+      gap: 12px;
+    }
+    .filter-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: thin;
+    }
+    .filter-btn {
+      flex: 0 0 auto;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .filter-btn.is-active {
+      background: var(--accent);
+      color: #fff8f1;
+      border-color: var(--accent);
+    }
+    .gender-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(156px, 1fr));
+      margin-top: 18px;
+    }
+    .card {
+      display: grid;
+      gap: 12px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 16px 32px rgba(78, 48, 27, 0.08);
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 36px rgba(78, 48, 27, 0.12);
+    }
+    .card-figure {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      background: linear-gradient(180deg, #fff3e6, #f6eadf);
+      overflow: hidden;
+    }
+    .card-figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .badge-stack {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      display: grid;
+      gap: 8px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      box-shadow: 0 10px 18px rgba(58, 34, 17, 0.15);
+    }
+    .badge--sale {
+      background: #fff3e8;
+      color: #a53f12;
+    }
+    .badge--soldout {
+      background: rgba(39, 29, 24, 0.86);
+      color: #fff9f4;
+    }
+    .card-copy {
+      padding: 0 14px 14px;
+      display: grid;
+      gap: 10px;
+    }
+    .card-copy h3 {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.35;
+    }
+    .price {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      font-weight: 800;
+    }
+    .price s {
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #fff5eb;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 1px solid rgba(208, 91, 35, 0.12);
+    }
+    .detail {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      align-items: end;
+      background: rgba(27, 20, 16, 0.4);
+      padding: 10px;
+      z-index: 30;
+    }
+    .detail-panel {
+      max-height: min(86vh, 760px);
+      overflow: auto;
+      background: #fffdf9;
+      border-radius: 28px 28px 18px 18px;
+      border: 1px solid var(--line);
+      box-shadow: 0 32px 60px rgba(40, 26, 17, 0.28);
+    }
+    .detail-copy {
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+    }
+    .detail-close {
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: end;
+      padding: 14px 14px 0;
+      z-index: 2;
+    }
+    .detail-close button {
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.85);
+      cursor: pointer;
+    }
+    .empty {
+      border: 1px dashed var(--line);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      background: #fffaf5;
+      margin-top: 16px;
+    }
+    @media (min-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1.2fr 0.8fr;
+        align-items: end;
+      }
+      .detail {
+        align-items: center;
+        justify-items: center;
+      }
+      .detail-panel {
+        width: min(960px, calc(100vw - 32px));
+        border-radius: 32px;
+      }
+      .detail-layout {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <main>
-    <h1>Bloom Corner Kiddies</h1>
-    <p>Storefront shell placeholder. Lane A implementation starts here.</p>
+  <main
+    class="page shell"
+    x-data="storefrontApp()"
+    x-init="init()"
+  >
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Trusted Kidswear on WhatsApp</p>
+          <h1 class="title" x-text="status.store_name || 'Bloom Corner Kiddies'"></h1>
+          <p class="tagline" x-text="status.tagline || 'Beautiful kids wear, ready for your next message.'"></p>
+          <p class="tagline" x-text="status.intro_text || 'Browse the catalogue and message us when you find something you love.'"></p>
+
+          <div class="status-row">
+            <span class="pill">
+              <strong x-text="statusLabel(status.status)"></strong>
+            </span>
+            <span class="pill" x-text="status.message || 'Replies as soon as possible.'"></span>
+          </div>
+
+          <div class="cta-row">
+            <a class="cta cta--primary" :href="waLink()" target="_blank" rel="noopener">Chat on WhatsApp</a>
+            <a class="cta cta--secondary" :href="status.telegram_link || 'https://t.me/placeholder'" target="_blank" rel="noopener">Open Telegram</a>
+          </div>
+        </div>
+
+        <div class="trust-grid">
+          <article class="trust-card">
+            <h3>Human-first handoff</h3>
+            <p>Ask questions, confirm sizing, and order directly without wrestling a checkout flow.</p>
+          </article>
+          <article class="trust-card">
+            <h3>Live status</h3>
+            <p>Status refreshes every 60 seconds so parents know whether replies are immediate or delayed.</p>
+          </article>
+          <article class="trust-card">
+            <h3>Multi-category browsing</h3>
+            <p>Filter by school, occasions, baby, girls, boys, and more without losing the grid state.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Browse the Catalogue</h2>
+          <p>Tap a product for a shareable detail preview. Full purchase handoff arrives in Sprint 6.</p>
+        </div>
+      </div>
+
+      <div class="filters">
+        <div class="filter-scroll">
+          <button class="filter-btn" :class="{ 'is-active': activeCategory === '' }" @click="setCategory('')">All</button>
+          <template x-for="category in categories" :key="category.slug">
+            <button
+              class="filter-btn"
+              :class="{ 'is-active': activeCategory === category.slug }"
+              @click="setCategory(category.slug)"
+            >
+              <span x-text="category.name"></span>
+            </button>
+          </template>
+        </div>
+
+        <div class="gender-row">
+          <template x-for="option in genderOptions" :key="option.value">
+            <button
+              class="filter-btn"
+              :class="{ 'is-active': activeGender === option.value }"
+              @click="activeGender = option.value"
+              x-text="option.label"
+            ></button>
+          </template>
+        </div>
+      </div>
+
+      <div class="grid">
+        <template x-for="product in filteredProducts()" :key="product.id">
+          <article class="card" @click="openProduct(product.id)">
+            <div class="card-figure">
+              <template x-if="product.primary_image_url">
+                <img :src="product.primary_image_url" :alt="product.name" loading="lazy">
+              </template>
+              <template x-if="!product.primary_image_url">
+                <div style="width:100%;height:100%;display:grid;place-items:center;color:var(--muted);">Photo coming soon</div>
+              </template>
+              <div class="badge-stack">
+                <template x-if="product.badges.sold_out">
+                  <span class="badge badge--soldout">Sold Out</span>
+                </template>
+                <template x-if="!product.badges.sold_out && product.badges.on_sale">
+                  <span class="badge badge--sale">Sale</span>
+                </template>
+              </div>
+            </div>
+            <div class="card-copy">
+              <h3 x-text="product.name"></h3>
+              <div class="price">
+                <template x-if="product.original_price">
+                  <s x-text="formatPrice(product.original_price)"></s>
+                </template>
+                <span x-text="formatPrice(product.price)"></span>
+              </div>
+              <div class="tag-row">
+                <span class="tag" x-text="capitalize(product.gender)"></span>
+                <template x-for="category in product.categories.slice(0, 2)" :key="category.slug">
+                  <span class="tag" x-text="category.name"></span>
+                </template>
+              </div>
+            </div>
+          </article>
+        </template>
+      </div>
+
+      <template x-if="filteredProducts().length === 0">
+        <div class="empty">No products match the current filters yet.</div>
+      </template>
+    </section>
+
+    <template x-if="activeProduct">
+      <div class="detail" @click.self="closeProduct()">
+        <section class="detail-panel">
+          <div class="detail-close">
+            <button @click="closeProduct()">Close</button>
+          </div>
+          <div class="detail-layout">
+            <div class="card-figure" style="margin:0 16px 16px;">
+              <template x-if="activeProduct.primary_image_url">
+                <img :src="activeProduct.primary_image_url" :alt="activeProduct.name">
+              </template>
+            </div>
+            <div class="detail-copy">
+              <h2 class="title" style="font-size:clamp(1.7rem,5vw,2.6rem);max-width:none;" x-text="activeProduct.name"></h2>
+              <div class="price">
+                <template x-if="activeProduct.original_price">
+                  <s x-text="formatPrice(activeProduct.original_price)"></s>
+                </template>
+                <span x-text="formatPrice(activeProduct.price)"></span>
+              </div>
+              <div class="tag-row">
+                <span class="tag" x-text="capitalize(activeProduct.gender)"></span>
+                <template x-for="category in activeProduct.categories" :key="category.slug">
+                  <span class="tag" x-text="category.name"></span>
+                </template>
+              </div>
+              <p class="tagline" x-text="activeProduct.description || 'Detailed buying guidance and handoff actions land in the next sprint.'"></p>
+              <div class="status-row">
+                <template x-for="size in activeProduct.sizes" :key="size.size_label">
+                  <span class="pill">
+                    <strong x-text="size.size_label"></strong>
+                    <span x-text="size.is_sold_out ? 'Sold out' : `${size.stock_qty} left`"></span>
+                  </span>
+                </template>
+              </div>
+              <div class="cta-row">
+                <button class="cta cta--primary" @click="copyCurrentUrl()">Copy Link</button>
+                <a class="cta cta--secondary" :href="waLink()" target="_blank" rel="noopener">Message Seller</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </template>
   </main>
+
+  <script>
+    function storefrontApp() {
+      return {
+        products: [],
+        categories: [],
+        status: {
+          status: 'online',
+          message: 'Replies as soon as possible.',
+          wa_number: '',
+          telegram_link: '',
+          store_name: 'Bloom Corner Kiddies',
+          tagline: '',
+          intro_text: ''
+        },
+        activeCategory: '',
+        activeGender: '',
+        activeProductId: null,
+        genderOptions: [
+          { value: '', label: 'All' },
+          { value: 'girls', label: 'Girls' },
+          { value: 'boys', label: 'Boys' },
+          { value: 'unisex', label: 'Unisex' }
+        ],
+        async init() {
+          await Promise.all([this.loadCategories(), this.loadProducts(), this.loadStatus()]);
+          this.restoreProductFromUrl();
+          window.addEventListener('popstate', () => this.restoreProductFromUrl());
+          window.setInterval(() => this.loadStatus(), 60000);
+        },
+        async loadProducts() {
+          const suffix = this.activeCategory ? `?category=${encodeURIComponent(this.activeCategory)}` : '';
+          const response = await fetch(`/api/products.php${suffix}`);
+          const payload = await response.json();
+          this.products = payload.products || [];
+        },
+        async loadCategories() {
+          const response = await fetch('/api/categories.php');
+          const payload = await response.json();
+          this.categories = payload.categories || [];
+        },
+        async loadStatus() {
+          const response = await fetch('/api/status.php');
+          this.status = await response.json();
+          document.title = `${this.status.store_name || 'Bloom Corner Kiddies'} | Kids Clothes Storefront`;
+        },
+        filteredProducts() {
+          return this.products.filter((product) => {
+            const genderMatch = this.activeGender === '' || product.gender === this.activeGender;
+            const categoryMatch = this.activeCategory === '' || product.categories.some((category) => category.slug === this.activeCategory);
+            return genderMatch && categoryMatch;
+          });
+        },
+        setCategory(slug) {
+          this.activeCategory = slug;
+          this.loadProducts();
+        },
+        openProduct(id) {
+          this.activeProductId = Number(id);
+          const url = new URL(window.location.href);
+          url.searchParams.set('product', String(id));
+          window.history.pushState({ product: id }, '', url);
+        },
+        closeProduct() {
+          this.activeProductId = null;
+          const url = new URL(window.location.href);
+          url.searchParams.delete('product');
+          window.history.pushState({}, '', url);
+        },
+        restoreProductFromUrl() {
+          const params = new URLSearchParams(window.location.search);
+          const productId = params.get('product');
+          this.activeProductId = productId ? Number(productId) : null;
+        },
+        get activeProduct() {
+          return this.products.find((product) => product.id === this.activeProductId) || null;
+        },
+        formatPrice(value) {
+          return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(value);
+        },
+        capitalize(value) {
+          return value ? value.charAt(0).toUpperCase() + value.slice(1) : '';
+        },
+        statusLabel(status) {
+          if (status === 'brb') return '🟡 BRB';
+          if (status === 'offline') return '🔴 Offline';
+          return '🟢 Online';
+        },
+        waLink() {
+          const number = this.status.wa_number || '2349049308656';
+          return `https://wa.me/${encodeURIComponent(number)}`;
+        },
+        async copyCurrentUrl() {
+          try {
+            await navigator.clipboard.writeText(window.location.href);
+          } catch (_) {}
+        }
+      };
+    }
+  </script>
 </body>
 </html>

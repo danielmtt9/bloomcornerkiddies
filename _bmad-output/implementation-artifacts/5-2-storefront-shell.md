@@ -1,6 +1,6 @@
 # Story 5.2: Storefront Shell
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -19,15 +19,15 @@ so that first paint is fast and the shell is usable without a build pipeline.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 — Build the storefront shell markup/head (AC: 1, 2, 3, 4)
-  - [ ] Add Alpine.js CDN usage.
-  - [ ] Set page metadata and analytics placeholder.
-- [ ] Task 2 — Implement the responsive shell layout (AC: 5, 6)
-  - [ ] Keep markup/CSS lightweight.
-  - [ ] Prevent horizontal scroll at 320px.
-- [ ] Task 3 — Verify shell performance/structure (AC: 1, 2, 3, 4, 5, 6)
-  - [ ] Add static or smoke validation.
-  - [ ] Record results in this story.
+- [x] Task 1 — Build the storefront shell markup/head (AC: 1, 2, 3, 4)
+  - [x] Add Alpine.js CDN usage.
+  - [x] Set page metadata and analytics placeholder.
+- [x] Task 2 — Implement the responsive shell layout (AC: 5, 6)
+  - [x] Keep markup/CSS lightweight.
+  - [x] Prevent horizontal scroll at 320px.
+- [x] Task 3 — Verify shell performance/structure (AC: 1, 2, 3, 4, 5, 6)
+  - [x] Add static or smoke validation.
+  - [x] Record results in this story.
 
 ## Dev Notes
 
@@ -41,10 +41,22 @@ gpt-5
 
 ### Debug Log References
 
+- `npm run test-storefront-shell`
+
 ### Completion Notes List
 
+- Replaced the storefront placeholder with a full inline-CSS, Alpine.js CDN shell in `public_html/index.html`.
+- Added title, meta description, OG tags, and GA4 placeholder snippet in the document head.
+- Layout now guards against horizontal overflow at narrow mobile widths and keeps the initial shell lightweight without a build step.
+
 ### File List
+
+- public_html/index.html
+- scripts/test-storefront-shell.mjs
+- package.json
+- _bmad-output/implementation-artifacts/5-2-storefront-shell.md
 
 ### Change Log
 
 - Story created from Lane A sprint plan.
+- Implemented the responsive storefront shell and metadata contract.

@@ -72,12 +72,12 @@ development_status:
   4-4-admin-password-change: done
   epic-4-retrospective: optional
 
-  epic-5: backlog
-  5-1-storefront-product-category-api: ready-for-dev
-  5-2-storefront-shell: ready-for-dev
-  5-3-hero-trust-section: ready-for-dev
-  5-4-product-grid-filters: ready-for-dev
-  5-5-shareable-product-routing: ready-for-dev
+  epic-5: done
+  5-1-storefront-product-category-api: done
+  5-2-storefront-shell: done
+  5-3-hero-trust-section: done
+  5-4-product-grid-filters: done
+  5-5-shareable-product-routing: done
   epic-5-retrospective: optional
 
   epic-6: backlog

@@ -1,6 +1,6 @@
 # Story 5.4: Product Grid & Filters
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -19,15 +19,15 @@ so that relevant products are discoverable without page reloads.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 — Build product grid rendering (AC: 1, 5, 6)
-  - [ ] Render primary image, badge state, and card data.
-  - [ ] Keep sold-out products visible but marked.
-- [ ] Task 2 — Implement filter interactions (AC: 2, 3, 4)
-  - [ ] Add mobile-scrollable category tabs.
-  - [ ] Compose gender/category logic against multi-category data.
-- [ ] Task 3 — Verify browse/filter behavior (AC: 1, 2, 3, 4, 5, 6)
-  - [ ] Add smoke/test verification.
-  - [ ] Record results in this story.
+- [x] Task 1 — Build product grid rendering (AC: 1, 5, 6)
+  - [x] Render primary image, badge state, and card data.
+  - [x] Keep sold-out products visible but marked.
+- [x] Task 2 — Implement filter interactions (AC: 2, 3, 4)
+  - [x] Add mobile-scrollable category tabs.
+  - [x] Compose gender/category logic against multi-category data.
+- [x] Task 3 — Verify browse/filter behavior (AC: 1, 2, 3, 4, 5, 6)
+  - [x] Add smoke/test verification.
+  - [x] Record results in this story.
 
 ## Dev Notes
 
@@ -41,10 +41,28 @@ gpt-5
 
 ### Debug Log References
 
+- `npm run test-storefront-shell`
+- `npm run test-storefront-api`
+
 ### Completion Notes List
 
+- Implemented responsive storefront card rendering with primary image, sale/sold-out badges, and lazy-loaded images.
+- Added horizontally scrollable category tabs on mobile plus composable gender filters in Alpine state.
+- Sold-out products remain in the grid and are visibly marked instead of hidden.
+- Multi-category behavior is consistent across API payload, client filtering, and card tag rendering.
+
 ### File List
+
+- public_html/index.html
+- public_html/includes/storefront.php
+- public_html/api/products.php
+- public_html/api/categories.php
+- scripts/test-storefront-shell.mjs
+- scripts/test-storefront-api.mjs
+- package.json
+- _bmad-output/implementation-artifacts/5-4-product-grid-filters.md
 
 ### Change Log
 
 - Story created from Lane A sprint plan.
+- Implemented the product grid and multi-category filter interactions.
