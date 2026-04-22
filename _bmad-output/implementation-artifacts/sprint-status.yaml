@@ -65,11 +65,11 @@ development_status:
   3-5-edit-hide-delete: done
   epic-3-retrospective: optional
 
-  epic-4: backlog
-  4-1-store-settings-page: ready-for-dev
-  4-2-seller-status-control: ready-for-dev
-  4-3-referral-code-admin: ready-for-dev
-  4-4-admin-password-change: ready-for-dev
+  epic-4: done
+  4-1-store-settings-page: done
+  4-2-seller-status-control: done
+  4-3-referral-code-admin: done
+  4-4-admin-password-change: done
   epic-4-retrospective: optional
 
   epic-5: backlog

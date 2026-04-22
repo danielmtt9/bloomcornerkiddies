@@ -1,6 +1,6 @@
 # Story 4.3: Referral Code Admin
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -18,15 +18,15 @@ so that referral activity is trackable from the admin panel.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 — Build referral list and create flow (AC: 1, 2)
-  - [ ] Render referral list and creation UI.
-  - [ ] Enforce code uniqueness and generation rules.
-- [ ] Task 2 — Build detail and redemption flows (AC: 3, 4, 5)
-  - [ ] Show history and record redemptions.
-  - [ ] Support deactivate behavior without data loss.
-- [ ] Task 3 — Verify referral admin behavior (AC: 1, 2, 3, 4, 5)
-  - [ ] Add smoke/test coverage.
-  - [ ] Record results in this story.
+- [x] Task 1 — Build referral list and create flow (AC: 1, 2)
+  - [x] Render referral list and creation UI.
+  - [x] Enforce code uniqueness and generation rules.
+- [x] Task 2 — Build detail and redemption flows (AC: 3, 4, 5)
+  - [x] Show history and record redemptions.
+  - [x] Support deactivate behavior without data loss.
+- [x] Task 3 — Verify referral admin behavior (AC: 1, 2, 3, 4, 5)
+  - [x] Add smoke/test coverage.
+  - [x] Record results in this story.
 
 ## Dev Notes
 
@@ -40,10 +40,26 @@ gpt-5
 
 ### Debug Log References
 
+- `php -l public_html/admin/referrals.php`
+- `npm run test-admin-settings`
+- `npm run test-admin-settings-db`
+
 ### Completion Notes List
 
+- Replaced the placeholder referrals screen with a full referral admin view that lists codes by referral count descending and supports new-code creation.
+- Added referral detail rendering with redemption history and a redemption-recording flow that inserts `referral_uses`, increments `referral_codes.total_referrals`, and snapshots the current referral discount.
+- Added activate/deactivate behavior without deleting historical referral rows.
+
 ### File List
+
+- public_html/admin/referrals.php
+- public_html/includes/settings.php
+- scripts/test-admin-settings.php
+- scripts/test-admin-settings.mjs
+- package.json
+- _bmad-output/implementation-artifacts/4-3-referral-code-admin.md
 
 ### Change Log
 
 - Story created from Lane A sprint plan.
+- Implemented referral list, detail, redemption, and deactivate flows.
