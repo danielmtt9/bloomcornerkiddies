@@ -93,11 +93,16 @@ ADMIN_PASSWORD_HASH=PASTE_OUTPUT_OF_npm_run_hash
 
 TELEGRAM_BOT_TOKEN=YOUR_BOT_TOKEN
 TELEGRAM_SELLER_CHAT_ID=YOUR_CHAT_ID
+TELEGRAM_WEBHOOK_SECRET=YOUR_OPTIONAL_SECRET_TOKEN
+TELEGRAM_ORDER_DESTINATION_MODE=disabled
+TELEGRAM_SELLER_CHANNEL_ID=
 
 WA_NUMBER=2349049308656
 TELEGRAM_LINK=https://t.me/+2349049308656
 
 APP_ENV=production
+PUBLIC_BASE_URL=https://bloomcornerkiddies.com
+PRODUCT_IMAGE_PROCESSING_MODE=off
 EOF
 ```
 
@@ -146,9 +151,34 @@ npm run migrate    # create all 8 tables + seed data
 
 After deploying the site, register the bot webhook:
 ```bash
-curl "https://api.telegram.org/bot{YOUR_TOKEN}/setWebhook?url=https://bloomcornerkiddies.com/telegram-webhook.php"
+npm run telegram:webhook:set
 ```
-Expected response: `{"ok":true,...}`
+Expected response includes `"ok": true`.
+
+Verify webhook status:
+```bash
+npm run telegram:webhook:info
+```
+
+Optional rollback:
+```bash
+npm run telegram:webhook:delete
+```
+
+Configure seller notification routing for confirmed Telegram orders:
+- `TELEGRAM_ORDER_DESTINATION_MODE=dm` to notify `TELEGRAM_SELLER_CHAT_ID`
+- `TELEGRAM_ORDER_DESTINATION_MODE=channel` to notify `TELEGRAM_SELLER_CHANNEL_ID`
+- `TELEGRAM_ORDER_DESTINATION_MODE=disabled` to keep notifications off until routing is finalized
+
+Optional product image processing mode:
+- `PRODUCT_IMAGE_PROCESSING_MODE=off` (default) keeps raw uploads
+- `PRODUCT_IMAGE_PROCESSING_MODE=auto` crops uploads to a 4:5 frame when GD is available
+- `PRODUCT_IMAGE_PROCESSING_MODE=required` enforces processing and fails upload when GD is unavailable
+
+Manual fallback command:
+```bash
+curl "https://api.telegram.org/bot{YOUR_TOKEN}/setWebhook?url=https://bloomcornerkiddies.com/telegram-webhook.php&secret_token={YOUR_OPTIONAL_SECRET}"
+```
 
 ---
 
@@ -206,7 +236,7 @@ rsync -avz --delete \
 | `DB connection failed` | Check `.env` DB credentials, verify DB/user created in hPanel |
 | `FATAL: .env file not found` | SSH in, create `~/.env` from `.env.example` |
 | `config.php: No such file` | SCP `config.php.example` to server as `~/config.php` |
-| Telegram webhook not working | Re-run setWebhook curl command after deploy |
+| Telegram webhook not working | Re-run `npm run telegram:webhook:set`, then inspect `npm run telegram:webhook:info` |
 | SSH connection refused | Verify port 65002, check SSH enabled in hPanel |
 | GitHub Actions SSH auth failure | Verify private key in GitHub Secrets, public key in Hostinger SSH Keys |
 | Uploads disappear after deploy | ✅ Expected — rsync excludes `uploads/` — images are server-only |

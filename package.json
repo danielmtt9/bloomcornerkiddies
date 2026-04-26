@@ -22,7 +22,11 @@
     "test-db":    "node scripts/test-connection.mjs",
     "test-schema":"node scripts/verify-schema.mjs",
     "deploy-key": "node scripts/generate-deploy-key.mjs",
-    "setup":      "node scripts/setup.mjs"
+    "setup":      "node scripts/setup.mjs",
+    "telegram:webhook:set": "node scripts/telegram-webhook.mjs set",
+    "telegram:webhook:info": "node scripts/telegram-webhook.mjs info",
+    "telegram:webhook:delete": "node scripts/telegram-webhook.mjs delete",
+    "test-telegram-bot-flow": "php scripts/test-telegram-bot-flow.php"
   },
   "dependencies": {
     "bcrypt":  "^5.1.1",

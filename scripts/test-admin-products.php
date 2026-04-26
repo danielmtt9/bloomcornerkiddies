@@ -41,6 +41,18 @@ if ($normalizedSizes[1]['is_sold_out'] !== true) {
     exit(1);
 }
 
+$processingMode = admin_image_processing_mode();
+if (!in_array($processingMode, ['off', 'auto', 'required'], true)) {
+    fwrite(STDERR, "Expected valid image processing mode.\n");
+    exit(1);
+}
+
+$gdSupport = admin_gd_processing_supported();
+if (!is_bool($gdSupport)) {
+    fwrite(STDERR, "Expected GD support probe to return bool.\n");
+    exit(1);
+}
+
 ob_start();
 admin_page_start('Product Render', 'products');
 echo '<div class="actions"><a class="primary" href="/admin/add.php">Add New Product</a></div>';

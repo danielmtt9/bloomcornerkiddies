@@ -144,7 +144,7 @@ $messages = admin_flash_messages();
 
   <section class="panel">
     <h2 class="page-title" style="font-size:1.25rem;">Product Photos</h2>
-    <p class="page-copy">JPEG, PNG, and WebP only. Max 5MB each. Use 4:5 portrait images for the best storefront result.</p>
+    <p class="page-copy">JPEG, PNG, and WebP only. Max 5MB each. Use 4:5 portrait images for the best storefront result (optional auto-crop can be enabled on supported servers).</p>
     <div class="field" style="margin-top:14px;">
       <label for="images">Upload Photos</label>
       <input form="product-form" id="images" name="images[]" type="file" accept="image/jpeg,image/png,image/webp" multiple <?= $isEdit ? '' : 'required' ?>>

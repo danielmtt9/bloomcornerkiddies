@@ -12,6 +12,8 @@ const PRODUCT_ALLOWED_MIME_TYPES = [
     'image/webp' => 'webp',
 ];
 const PRODUCT_MAX_IMAGE_BYTES = 5242880;
+const PRODUCT_IMAGE_TARGET_RATIO_WIDTH = 4;
+const PRODUCT_IMAGE_TARGET_RATIO_HEIGHT = 5;
 
 function admin_product_defaults(): array
 {
@@ -376,6 +378,8 @@ function admin_store_product_images(int $productId, array $files, int $startingS
             throw new RuntimeException('Could not persist uploaded image file.');
         }
 
+        admin_process_uploaded_image_if_enabled($absolutePath, $file['mime']);
+
         $stored[] = [
             'file_path' => $relativePath,
             'sort_order' => $startingSortOrder + $index,
@@ -384,6 +388,127 @@ function admin_store_product_images(int $productId, array $files, int $startingS
     }
 
     return $stored;
+}
+
+function admin_image_processing_mode(): string
+{
+    $mode = strtolower(trim(env_value('PRODUCT_IMAGE_PROCESSING_MODE', 'off')));
+    if (in_array($mode, ['off', 'auto', 'required'], true)) {
+        return $mode;
+    }
+    return 'off';
+}
+
+function admin_gd_processing_supported(): bool
+{
+    return function_exists('imagecreatetruecolor')
+        && function_exists('imagecopyresampled')
+        && function_exists('imagejpeg')
+        && function_exists('imagepng')
+        && function_exists('imagewebp')
+        && function_exists('imagealphablending')
+        && function_exists('imagesavealpha')
+        && function_exists('imagedestroy')
+        && function_exists('getimagesize');
+}
+
+function admin_process_uploaded_image_if_enabled(string $absolutePath, string $mime): void
+{
+    $mode = admin_image_processing_mode();
+    if ($mode === 'off') {
+        return;
+    }
+
+    if (!admin_gd_processing_supported()) {
+        if ($mode === 'required') {
+            throw new RuntimeException('Image processing is required but GD is not available.');
+        }
+        return;
+    }
+
+    admin_reframe_to_four_by_five($absolutePath, $mime);
+}
+
+function admin_reframe_to_four_by_five(string $absolutePath, string $mime): void
+{
+    [$width, $height] = getimagesize($absolutePath) ?: [0, 0];
+    if ($width <= 0 || $height <= 0) {
+        throw new RuntimeException('Could not read uploaded image dimensions.');
+    }
+
+    $source = match ($mime) {
+        'image/jpeg' => imagecreatefromjpeg($absolutePath),
+        'image/png' => imagecreatefrompng($absolutePath),
+        'image/webp' => imagecreatefromwebp($absolutePath),
+        default => false,
+    };
+
+    if ($source === false) {
+        throw new RuntimeException('Could not decode uploaded image.');
+    }
+
+    $targetRatio = PRODUCT_IMAGE_TARGET_RATIO_WIDTH / PRODUCT_IMAGE_TARGET_RATIO_HEIGHT;
+    $currentRatio = $width / $height;
+
+    $cropWidth = $width;
+    $cropHeight = $height;
+    $srcX = 0;
+    $srcY = 0;
+
+    if ($currentRatio > $targetRatio) {
+        $cropWidth = (int) round($height * $targetRatio);
+        $srcX = (int) floor(($width - $cropWidth) / 2);
+    } else {
+        $cropHeight = (int) round($width / $targetRatio);
+        $srcY = (int) floor(($height - $cropHeight) / 2);
+    }
+
+    $targetWidth = $cropWidth;
+    $targetHeight = (int) round($targetWidth / $targetRatio);
+
+    $target = imagecreatetruecolor($targetWidth, $targetHeight);
+    if ($target === false) {
+        imagedestroy($source);
+        throw new RuntimeException('Could not create image canvas for processing.');
+    }
+
+    if ($mime === 'image/png' || $mime === 'image/webp') {
+        imagealphablending($target, false);
+        imagesavealpha($target, true);
+    }
+
+    $copied = imagecopyresampled(
+        $target,
+        $source,
+        0,
+        0,
+        $srcX,
+        $srcY,
+        $targetWidth,
+        $targetHeight,
+        $cropWidth,
+        $cropHeight
+    );
+
+    if ($copied === false) {
+        imagedestroy($source);
+        imagedestroy($target);
+        throw new RuntimeException('Could not process uploaded image.');
+    }
+
+    $written = match ($mime) {
+        'image/jpeg' => imagejpeg($target, $absolutePath, 90),
+        'image/png' => imagepng($target, $absolutePath, 6),
+        'image/webp' => imagewebp($target, $absolutePath, 85),
+        default => false,
+    };
+
+    imagedestroy($source);
+    imagedestroy($target);
+
+    if ($written === false) {
+        throw new RuntimeException('Could not save processed uploaded image.');
+    }
 }
 
 function admin_delete_files(array $paths): void
