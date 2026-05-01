@@ -340,7 +340,7 @@
         ],
         async init() {
           this.initTheme();
-          await Promise.all([this.loadCategories(), this.loadProducts(), this.loadStatus()]);
+          await Promise.allSettled([this.loadCategories(), this.loadProducts(), this.loadStatus()]);
           this.restoreProductFromUrl();
           window.addEventListener('popstate', () => this.restoreProductFromUrl());
         },
@@ -360,26 +360,39 @@
           }
         },
         async loadProducts() {
-          const suffix = this.activeCategory ? `?category=${encodeURIComponent(this.activeCategory)}` : '';
-          const response = await fetch(`/api/products.php${suffix}`);
-          const payload = await response.json();
-          this.products = payload.products || [];
+          try {
+            const suffix = this.activeCategory ? `?category=${encodeURIComponent(this.activeCategory)}` : '';
+            const response = await fetch(`/api/products.php${suffix}`);
+            if (!response.ok) throw new Error('API Error');
+            const payload = await response.json();
+            this.products = payload.products || [];
+          } catch (e) { console.error('Failed to load products', e); }
         },
         async loadCategories() {
-          const response = await fetch('/api/categories.php');
-          const payload = await response.json();
-          this.categories = payload.categories || [];
+          try {
+            const response = await fetch('/api/categories.php');
+            if (!response.ok) throw new Error('API Error');
+            const payload = await response.json();
+            this.categories = payload.categories || [];
+          } catch (e) { console.error('Failed to load categories', e); }
         },
         async loadStatus() {
-          const response = await fetch('/api/status.php');
-          this.status = await response.json();
+          try {
+            const response = await fetch('/api/status.php');
+            if (!response.ok) throw new Error('API Error');
+            this.status = await response.json();
+          } catch (e) { console.error('Failed to load status', e); }
         },
         filteredProducts() {
-          return this.products.filter((product) => {
+          let filtered = this.products.filter((product) => {
             const genderMatch = this.activeGender === '' || product.gender === this.activeGender;
             const categoryMatch = this.activeCategory === '' || product.categories.some(c => c.slug === this.activeCategory);
             return genderMatch && categoryMatch;
           });
+          if (this.activeGender === '' && this.activeCategory === '') {
+             return filtered.slice(0, 10);
+          }
+          return filtered;
         },
         setCategory(slug) {
           this.activeCategory = slug;
