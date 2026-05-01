@@ -316,13 +316,59 @@
     
     <div class="w-full bg-surface-bright dark:bg-stone-900 md:rounded-3xl rounded-xl overflow-hidden border border-outline-variant/30 dark:border-stone-800 flex flex-col md:flex-row shadow-sm">
 
-      <!-- Image Section -->
-      <div class="w-full md:w-1/2 bg-surface-container dark:bg-stone-950 shrink-0 aspect-[4/5] md:aspect-auto">
-        <template x-if="activeImageUrl">
-          <img :src="activeImageUrl" class="w-full h-full object-cover" :alt="activeProduct?.name">
+      <!-- Image Section (Slideshow) -->
+      <div class="w-full md:w-1/2 bg-surface-container dark:bg-stone-950 shrink-0 relative"
+           x-data="{ 
+             currentSlide: 0, 
+             interval: null,
+             get slides() { return activeProduct ? (activeProduct.image_urls?.length ? activeProduct.image_urls : (activeProduct.primary_image_url ? [activeProduct.primary_image_url] : [])) : []; },
+             next() { this.currentSlide = (this.currentSlide + 1) % this.slides.length; },
+             prev() { this.currentSlide = (this.currentSlide - 1 + this.slides.length) % this.slides.length; },
+             startAuto() { this.stopAuto(); this.interval = setInterval(() => { if(this.slides.length > 1) this.next(); }, 4000); },
+             stopAuto() { if(this.interval) clearInterval(this.interval); }
+           }"
+           x-init="$watch('activeProduct', () => { currentSlide = 0; startAuto(); });"
+           @mouseenter="stopAuto()" @mouseleave="startAuto()">
+        
+        <template x-if="slides.length > 0">
+          <div class="relative w-full h-full overflow-hidden aspect-[4/5] md:aspect-auto md:min-h-[500px]">
+            <template x-for="(url, index) in slides" :key="index">
+              <div x-show="currentSlide === index" 
+                   x-transition.opacity.duration.500ms
+                   class="absolute inset-0 w-full h-full">
+                <template x-if="url.match(/\.(mp4|mov|webm)$/i)">
+                  <video :src="url" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+                </template>
+                <template x-if="!url.match(/\.(mp4|mov|webm)$/i)">
+                  <img :src="url" class="w-full h-full object-cover" :alt="activeProduct?.name">
+                </template>
+              </div>
+            </template>
+            
+            <!-- Arrows -->
+            <template x-if="slides.length > 1">
+              <div class="absolute inset-0 flex items-center justify-between p-4 pointer-events-none z-10">
+                <button @click.stop="prev(); startAuto();" class="w-10 h-10 rounded-full bg-white/70 backdrop-blur shadow-md flex items-center justify-center text-stone-800 hover:bg-white pointer-events-auto transition-colors">
+                  <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <button @click.stop="next(); startAuto();" class="w-10 h-10 rounded-full bg-white/70 backdrop-blur shadow-md flex items-center justify-center text-stone-800 hover:bg-white pointer-events-auto transition-colors">
+                  <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+              </div>
+            </template>
+            
+            <!-- Dots -->
+            <template x-if="slides.length > 1">
+              <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10">
+                <template x-for="(url, index) in slides" :key="index">
+                  <button @click.stop="currentSlide = index; startAuto();" class="w-2.5 h-2.5 rounded-full transition-all shadow-sm" :class="currentSlide === index ? 'bg-white scale-125' : 'bg-white/60 hover:bg-white/90'"></button>
+                </template>
+              </div>
+            </template>
+          </div>
         </template>
-        <template x-if="!activeImageUrl">
-           <div class="w-full h-full flex items-center justify-center text-outline italic">No image available</div>
+        <template x-if="slides.length === 0">
+           <div class="w-full h-full min-h-[400px] flex items-center justify-center text-outline italic">No media available</div>
         </template>
       </div>
 
