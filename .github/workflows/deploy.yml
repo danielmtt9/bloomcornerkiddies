@@ -51,15 +51,22 @@ jobs:
             --exclude='.git/' \
             --exclude='.github/' \
             --exclude='.env' \
+            --exclude='.env.example' \
             --exclude='*.md' \
             --exclude='_bmad-output/' \
             --exclude='.agents/' \
             --exclude='design-artifacts/' \
             --exclude='docs/' \
+            --exclude='keys/' \
+            --exclude='node_modules/' \
+            --exclude='package-lock.json' \
+            --exclude='package.json' \
+            --exclude='scripts/' \
             --exclude='uploads/' \
             -e "ssh -p $HOSTINGER_SSH_PORT -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" \
-            ./public_html/ \
-            ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }}:domains/bloomcornerkiddies.com/public_html/
+            ./ \
+            ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }}:domains/bloomcornerkiddies.com/
+         
 
       # --------------------------------------------------------
       # 4. Deployment status notification
