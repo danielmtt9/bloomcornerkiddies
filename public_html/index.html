@@ -122,11 +122,14 @@
       </div>
 
       <div class="flex items-center space-x-4 lg:space-x-6 text-[#D05B23] dark:text-[#E6824D]">
+        <a href="/admin/" title="Admin Panel" class="active:scale-95 transition-transform duration-200 text-stone-400 hover:text-[#D05B23]">
+          <span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+        </a>
         <button @click="toggleTheme()" class="active:scale-95 transition-transform duration-200" title="Toggle Theme">
-          <span class="material-symbols-outlined" x-text="isDarkMode ? 'light_mode' : 'dark_mode'"></span>
+          <span class="material-symbols-outlined text-[20px]" x-text="isDarkMode ? 'light_mode' : 'dark_mode'"></span>
         </button>
         <a :href="waLink()" target="_blank" class="hidden md:flex items-center gap-2 active:scale-95 transition-transform duration-200 relative">
-          <span class="material-symbols-outlined">forum</span>
+          <span class="material-symbols-outlined text-[20px]">forum</span>
           <span class="font-serif italic text-sm">Message Us</span>
         </a>
       </div>
