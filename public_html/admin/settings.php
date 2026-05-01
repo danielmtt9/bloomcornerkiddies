@@ -117,6 +117,30 @@ admin_page_start('Settings', 'settings');
         <textarea id="payment_info" name="payment_info"><?= htmlspecialchars($settings['payment_info'], ENT_QUOTES, 'UTF-8') ?></textarea>
       </div>
 
+      <h3 style="margin-top:24px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Footer & Socials</h3>
+      <div class="field-grid" style="margin-top:16px;">
+        <div class="field">
+          <label for="instagram_link">Instagram Link</label>
+          <input id="instagram_link" name="instagram_link" type="url" value="<?= htmlspecialchars($settings['instagram_link'], ENT_QUOTES, 'UTF-8') ?>" placeholder="https://instagram.com/...">
+        </div>
+        <div class="field">
+          <label for="facebook_link">Facebook Link</label>
+          <input id="facebook_link" name="facebook_link" type="url" value="<?= htmlspecialchars($settings['facebook_link'], ENT_QUOTES, 'UTF-8') ?>" placeholder="https://facebook.com/...">
+        </div>
+        <div class="field">
+          <label for="tiktok_link">TikTok Link</label>
+          <input id="tiktok_link" name="tiktok_link" type="url" value="<?= htmlspecialchars($settings['tiktok_link'], ENT_QUOTES, 'UTF-8') ?>" placeholder="https://tiktok.com/@...">
+        </div>
+        <div class="field">
+          <label for="logo_url">Logo URL</label>
+          <input id="logo_url" name="logo_url" type="url" value="<?= htmlspecialchars($settings['logo_url'], ENT_QUOTES, 'UTF-8') ?>" placeholder="https://.../logo.png">
+        </div>
+      </div>
+      <div class="field" style="margin-top:14px;">
+        <label for="store_address">Store Address</label>
+        <textarea id="store_address" name="store_address" placeholder="123 Example Street, City"><?= htmlspecialchars($settings['store_address'], ENT_QUOTES, 'UTF-8') ?></textarea>
+      </div>
+
       <div class="button-row" style="margin-top:16px;">
         <button type="submit">Save Settings</button>
       </div>

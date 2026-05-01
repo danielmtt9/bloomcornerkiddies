@@ -15,6 +15,11 @@ const SELLER_CONFIG_KEYS = [
     'payment_info',
     'seller_status',
     'referral_discount_percent',
+    'instagram_link',
+    'facebook_link',
+    'tiktok_link',
+    'store_address',
+    'logo_url',
 ];
 
 function admin_project_root(): string
@@ -62,6 +67,11 @@ function admin_settings_form_defaults(): array
         'payment_info' => (string) ($config['payment_info'] ?? ''),
         'seller_status' => (string) ($config['seller_status'] ?? 'online'),
         'referral_discount_percent' => $config['referral_discount_percent'] === null ? '' : (string) $config['referral_discount_percent'],
+        'instagram_link' => (string) ($config['instagram_link'] ?? ''),
+        'facebook_link' => (string) ($config['facebook_link'] ?? ''),
+        'tiktok_link' => (string) ($config['tiktok_link'] ?? ''),
+        'store_address' => (string) ($config['store_address'] ?? ''),
+        'logo_url' => (string) ($config['logo_url'] ?? ''),
     ];
 }
 
@@ -124,6 +134,11 @@ function admin_validate_settings_payload(array $data): array
         'payment_info' => trim((string) ($data['payment_info'] ?? '')),
         'seller_status' => $status,
         'referral_discount_percent' => $referralDiscount,
+        'instagram_link' => trim((string) ($data['instagram_link'] ?? '')),
+        'facebook_link' => trim((string) ($data['facebook_link'] ?? '')),
+        'tiktok_link' => trim((string) ($data['tiktok_link'] ?? '')),
+        'store_address' => trim((string) ($data['store_address'] ?? '')),
+        'logo_url' => trim((string) ($data['logo_url'] ?? '')),
     ]];
 }
 
@@ -153,6 +168,11 @@ function admin_update_status(string $status, string $message): void
         'payment_info' => get_config('payment_info', ''),
         'seller_status' => $status,
         'referral_discount_percent' => get_config('referral_discount_percent', ''),
+        'instagram_link' => get_config('instagram_link', ''),
+        'facebook_link' => get_config('facebook_link', ''),
+        'tiktok_link' => get_config('tiktok_link', ''),
+        'store_address' => get_config('store_address', ''),
+        'logo_url' => get_config('logo_url', ''),
     ]);
 }
 

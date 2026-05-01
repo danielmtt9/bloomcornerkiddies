@@ -226,5 +226,10 @@ function storefront_status_payload(): array
         'store_name' => get_config('store_name', 'Bloom Corner Kiddies'),
         'tagline' => get_config('tagline', 'Beautiful kids wear, ready for your next message.'),
         'intro_text' => get_config('intro_text', 'Browse the catalogue and message us when you find something you love.'),
+        'instagram_link' => get_config('instagram_link', ''),
+        'facebook_link' => get_config('facebook_link', ''),
+        'tiktok_link' => get_config('tiktok_link', ''),
+        'store_address' => get_config('store_address', ''),
+        'logo_url' => get_config('logo_url', ''),
     ];
 }
