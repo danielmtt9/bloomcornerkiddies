@@ -94,6 +94,16 @@
     .hide-scroll::-webkit-scrollbar { display: none; }
     .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
     [x-cloak] { display: none !important; }
+
+    /* Faint Watermark Texture */
+    body {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='250'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-style='italic' font-size='32' font-weight='bold' fill='%231e1b17' fill-opacity='0.025' transform='rotate(-15 250 125)'%3EBloom Corner Kiddies%3C/text%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-attachment: fixed;
+    }
+    html.dark body {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='250'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-style='italic' font-size='32' font-weight='bold' fill='%23ffffff' fill-opacity='0.015' transform='rotate(-15 250 125)'%3EBloom Corner Kiddies%3C/text%3E%3C/svg%3E");
+    }
   </style>
 </head>
 <body class="bg-background dark:bg-stone-950 text-on-background dark:text-stone-200 font-sans min-h-screen flex flex-col" x-data="storefrontApp()" x-init="init()">
@@ -106,9 +116,9 @@
       <!-- Desktop Links -->
       <div class="hidden md:flex space-x-8 items-center">
         <button class="text-stone-600 dark:text-stone-400 font-medium font-serif italic tracking-tight hover:text-[#D05B23] transition-colors" @click="activeGender=''; activeCategory='';">All Arrivals</button>
-        <button class="text-stone-600 dark:text-stone-400 font-medium font-serif italic tracking-tight hover:text-[#D05B23] transition-colors" @click="activeGender='girls';">Girls</button>
-        <button class="text-stone-600 dark:text-stone-400 font-medium font-serif italic tracking-tight hover:text-[#D05B23] transition-colors" @click="activeGender='boys';">Boys</button>
-        <button class="text-stone-600 dark:text-stone-400 font-medium font-serif italic tracking-tight hover:text-[#D05B23] transition-colors" @click="activeCategory='school';">School</button>
+        <button class="text-stone-600 dark:text-stone-400 font-medium font-serif italic tracking-tight hover:text-[#D05B23] transition-colors" @click="activeGender='girls'; activeCategory='';">Girls</button>
+        <button class="text-stone-600 dark:text-stone-400 font-medium font-serif italic tracking-tight hover:text-[#D05B23] transition-colors" @click="activeGender='boys'; activeCategory='';">Boys</button>
+        <button class="text-stone-600 dark:text-stone-400 font-medium font-serif italic tracking-tight hover:text-[#D05B23] transition-colors" @click="activeCategory='school'; activeGender='';">School</button>
       </div>
 
       <div class="flex items-center space-x-4 lg:space-x-6 text-[#D05B23] dark:text-[#E6824D]">
